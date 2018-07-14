@@ -19,3 +19,34 @@ Input: A = [2,-1,2], K = 3
 Output: 3
 
 Author: Mindy927 */
+
+
+/*
+Deque  
+(1) Sum Array, Sum [i] keeps sum of nums[0] to nums[i-1]
+(2) Deque of index i such that sum[i] is increasing (MonoQueue)
+Only when sum[i] is increasing it can be next possible 
+*/
+
+class Solution {
+    public int shortestSubarray(int[] A, int K) {
+        int n = A.length;
+        int[] sum = new int[n+1];
+        for(int i=1; i<n+1; i++){
+            sum[i] = sum[i-1] + A[i-1];
+        }
+        
+        Deque<Integer> q = new ArrayDeque<>(); //deque of indices
+        int min = n+1; 
+        for (int i=0; i < n+1; i++){
+            while (!q.isEmpty() && sum[i] - sum[q.peekFirst()]>=K) 
+                min = Math.min(min, i - q.pollFirst());
+            
+            while (!q.isEmpty() && sum[q.peekLast()]>= sum[i])  //Maintain MonoQueue
+                q.pollLast();
+            q.addLast(i);
+        }
+        
+        return min==n+1? -1:min;
+    }
+}
