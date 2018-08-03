@@ -17,7 +17,37 @@ Answer: 3
 """
 __author__ = 'Mindy927'*/
 
+//Method 1: DFS
 
+class Solution {
+    public int numIslands(char[][] grid) {
+        int cnt = 0;
+        for(int i=0; i<grid.length; i++){
+            for (int j=0; j<grid[0].length; j++){
+                if (grid[i][j] == '1') {
+                    cnt++;
+                    sink(grid, i, j);
+                }
+            }
+        }
+        
+        return cnt;
+    }
+    
+    int [] DIRS = new int[]{0,-1,0,1,0};
+    public void sink(char[][] grid, int i, int j){
+        if (i<0 || j<0 || i>= grid.length || j >= grid[0].length || grid[i][j] == '0') return;
+        grid[i][j] = '0';
+        
+        for (int d = 0; d<4; d++){
+            int x = i + DIRS[d];
+            int y = j + DIRS[d+1];
+            sink(grid, x, y);
+        }
+    }
+}
+
+//Method 2: Union find
 
 class Solution {
     class UF{
