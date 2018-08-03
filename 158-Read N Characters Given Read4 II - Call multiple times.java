@@ -28,30 +28,30 @@ Author: Mindy927 */
 
 //Corner Case: n<4
 //Only read4 when current buf4 has done copying to buf
+/* The read4 API is defined in the parent class Reader4.
+      int read4(char[] buf); */
+
 public class Solution extends Reader4 {
     /**
      * @param buf Destination buffer
      * @param n   Maximum number of characters to read
      * @return    The number of characters read
      */
-
-    //Start pointer to read from buf4
-    int offset4 = 0;  
-    //Last avaliable char in buf4 (exlusive)
-    int cnt4 = 0;   
+    int p4 = 0; //index of cur char to be read from buf4
+    int end4 = 0; //number of avaliable values in buf4
     char[] buf4 = new char[4];
-    public int read(char[] buf, int n) {
+    public int read(char[] buf, int n) { 
         int cnt = 0;
-        while (cnt < n){
-            if (offset4 == cnt4) { //Done reading all chars in buf4
-                cnt4 = read4(buf4);   
-                offset4 = 0;
-            }
-            if (cnt4==0) break; 
-            while (cnt < n && offset4 < cnt4){
-                buf[cnt++] = buf4[offset4++];
+        while ( cnt < n){
+            if (p4 < end4) {
+                buf[cnt++] = buf4[p4++];
+            }else{
+                end4 = read4(buf4);
+                if (end4 == 0) break;
+                p4 = 0;
             }
         }
+        
         return cnt;
     }
 }
