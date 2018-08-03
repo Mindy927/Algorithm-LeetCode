@@ -18,7 +18,52 @@ Output: [""]
 
 
 Author: Mindy927 */
+//Method 1 : Set + Backtracking
+class Solution {
+    public List<String> removeInvalidParentheses(String s) {
+        int left=0, right = 0; //number of '(' and ')' to be removed
+        for (int i=0; i<s.length();i++){
+            if (s.charAt(i) == '(') left++; 
+            else if (s.charAt(i)==')'){
+                if (left!=0) left--;
+                else right++;
+            }
+        }
+        
+        Set<String> result = new HashSet<>();
+        StringBuilder sb = new StringBuilder();
+        remove(s, 0, left, right, 0, sb, result);
+        return new ArrayList<>(result);
+    }
+  
+    public void remove(String s, int start, int left, int right, int open, StringBuilder sb, Set<String> result){
+         if (left < 0 || right < 0 || open < 0 ) return;
+         if (start == s.length() ){
+            if (left == 0 && right ==0 && open==0) result.add(sb.toString());
+            return;
+        }
+        
+        char c = s.charAt(start);
+        int len = sb.length();
+        
+        if (c =='('){
+            remove(s, start+1, left-1, right, open, sb, result); //not use '(', dfs not use first, otherwise will append c to sb
+            remove(s, start+1, left, right, open+1, sb.append(c), result);    //use '('
+            
+        }else if (c ==')'){
+            remove(s, start+1, left, right-1, open, sb, result); //not use ')'
+            remove(s, start+1, left, right, open-1, sb.append(c), result);    //use ')'
+        } else{
+           remove(s, start+1, left, right, open, sb.append(c), result);  
+        }
+        
+        sb.setLength(len); //backtracking
+    }
+}
 
+
+
+//Method 2
 class Solution {
     //Key Idea: Can remove any of ')' in the prefix once more ')' appeared
     public List<String> removeInvalidParentheses(String s) {
