@@ -25,6 +25,7 @@ Author: Mindy927 */
  * }
  */
 
+//Method1: Recursion
 class Solution {
     public boolean isValidBST(TreeNode root) {
       return helper(root, null, null);
@@ -37,4 +38,27 @@ class Solution {
 
         return helper(root.left, min, root.val) && helper(root.right, root.val, max);
     }    
+}
+
+//Method 2: Iteration using stack
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) return true;
+        Stack<TreeNode> stack = new Stack<>();
+        
+        Integer prev = null;
+        while (!stack.isEmpty() || root!=null){
+            while(root!= null){ //keep pushing root.left to stack
+                stack.push(root);
+                root = root.left;
+            }
+            
+            root = stack.pop();
+            if (prev!=null && root.val <= prev) return false;
+            prev = root.val;
+            root = root.right;
+        }
+        
+        return true;
+    }
 }
