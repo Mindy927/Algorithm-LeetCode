@@ -32,7 +32,7 @@ class Solution {
         if(start==nums.length) return;
         
         for (int i= start; i < nums.length; i++){ //i is the start point of next element
-            if (i>0 && nums[i] == nums[i-1] && i!=start) continue;
+            if (i>start && nums[i] == nums[i-1] ) continue; //add nums[i] and nums[i-1] at this round is same
             
             temp.add(nums[i]);
             helper(nums, i+1, result, temp);
