@@ -18,7 +18,7 @@ Author: Mindy927 */
 //Method 1: Greedy. 
 
 class Solution {
-    //Iterate nums, curMax is the farthest point that all points in [0, curEnd] can reach. When reaches curEnd, set curEnd to curMax, cnt++
+    //Iterate nums, curMax is the farthest point that all points in [0, curEnd] can reach. When i reaches curEnd, set curEnd to curMax, cnt++
     public int jump(int[] nums) {
         int cnt = 0;
         int curMax = 0;
@@ -36,20 +36,20 @@ class Solution {
 }
 
 
-//Method 2: Beats 2%
+//Method 2: DP, Beats 2%
 class Solution {
-    //Go back to start, find the the earliest point which can reach current point 
     public int jump(int[] nums) {
-        int cnt = 0;
-        int cur = nums.length-1;
-        while ( cur > 0 ){
-            int temp = cur;
-            for (int i = cur-1; i>=0; i--){
-                if (i + nums[i] >= temp)  cur = i;
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        
+        for (int i=0; i<nums.length; i++){
+            for (int j=i+1; j<nums.length && j<=i+nums[i]; j++){ //can jump to nums[j] from nums[i]
+                dp[j] = Math.min(dp[i]+1, dp[j]);
             }
-            cnt++;
         }
         
-        return cnt;
+        
+        return dp[nums.length-1];
     }
 }
