@@ -25,7 +25,7 @@ Could you solve it in linear time?
 Author: Mindy927 */
 
 
-
+//Method 1: max heap O(nlgk)
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
         if (nums.length==0) return nums; 
@@ -45,5 +45,37 @@ class Solution {
         }
         
         return result;
+    }
+}
+
+
+//Method 2: deque of indices
+/* 
+From beginning, remove items with index < i-k+1
+From end, remove items k with nums[k] < nums[i], cause we have i alreay, k will not be max anymore
+In this way, deque with number DECREASING
+*/
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums.length == 0) return new int[0];
+        Deque<Integer> q = new ArrayDeque<>(); //deque of indices
+        int n = nums.length;
+        int[] res = new int[n-k+1];
+        int index = 0;
+        
+        for (int i=0; i<n; i++){ // [i-k+1, i]
+            while (!q.isEmpty() && q.peekFirst() < i-k+1) q.pollFirst();
+            
+            while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) q.pollLast();
+            
+            q.offerLast(i);
+            
+            if (i>=k-1){
+                res[index++] = nums[q.peekFirst()];
+            }
+        }
+        
+        return res;
     }
 }
