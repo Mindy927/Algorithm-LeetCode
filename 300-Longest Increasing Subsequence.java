@@ -33,4 +33,28 @@ class Solution {
     }
 }
 
-//Method 2: Two pointers
+/*
+Method 2: Two pointers O(nlgn)
+(1) if x is larger than all tails, append it, increase the size by 1
+(2) if tails[i-1] < x <= tails[i], update tails[i]
+*/
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int[] tails = new int[nums.length]; //tail[i]: smallest tail for LIS of length i+1 
+        int size = 0;
+        for (int x : nums) {
+            int left = 0, right = size;
+            while (left != right) { //binary search for which LIS current number x should fit into
+                int mid = (left + right) / 2;
+                if (tails[mid] < x)
+                    left = mid + 1;
+                else
+                    right = mid;
+            }
+            
+            tails[left] = x;
+            if (left == size) size++;
+        }
+        return size;
+    }
+}
