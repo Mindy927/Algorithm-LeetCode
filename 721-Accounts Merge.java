@@ -35,7 +35,7 @@ class Solution {
         for (List<String> acc : accounts) {
             String p = find(parent,acc.get(1));
             for (int i = 2; i < acc.size(); i++)
-                parent.put(find(parent,acc.get(i)), p); 
+                parent.put(find(parent,acc.get(i)), p); //find update new root for current root!!
         }
         
        //union based on parent map built 
