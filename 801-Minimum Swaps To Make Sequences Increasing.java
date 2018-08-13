@@ -33,13 +33,14 @@ class Solution {
         
         swap[0] = 1; keep[0] = 0;
         for (int i=1; i<n; i++){
-            if (A[i-1] < A[i] && B[i-1] < B[i]) {
-                keep[i] = Math.min(keep[i], keep[i-1]); //valid if we keep both i and i-1
-                swap[i] = Math.min(swap[i], swap[i-1]) + 1; //valid if we swap both i and i-1
+            if (A[i] > A[i-1] && B[i] > B[i-1]){ //swap at both i-1 and i
+                keep[i] = Math.min(keep[i], keep[i-1]);
+                swap[i] = Math.min(swap[i-1]+1, swap[i]); 
             }
-            if (A[i-1] < B[i] && B[i-1] < A[i]){
-                swap[i] = Math.min(swap[i], keep[i-1]) + 1; //valid if we doesn't swap i-1
-                keep[i] = Math.min(keep[i], swap[i-1]);
+            
+            if (A[i] > B[i-1] && B[i] > A[i-1]){ //swap at either i-1 or i
+                swap[i] = Math.min(keep[i-1]+1, swap[i]);
+                keep[i] = Math.min(swap[i-1], keep[i]);
             }
         }
         
