@@ -1,5 +1,5 @@
 /*
-iven two arrays, write a function to compute their intersection.
+given two arrays, write a function to compute their intersection.
 
 Example:
 Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2, 2].
@@ -14,11 +14,16 @@ What if elements of nums2 are stored on disk, and the memory is limited such tha
 
 Author:Mindy927 */
 /*
-Method 1:
-sort, two pointers ,similiar idea as merge sort
+If only nums2 cannot fit in memory, put all elements of nums1 into a HashMap, 
+read chunks of array that fit into the memory, and record the intersections.
 
-Method 2: HashMap
+If both nums1 and nums2 are so huge that neither fit into the memory, 
+sort them individually (external sort), then read 2 elements from each array at a time in memory, record intersections.
 */
+
+
+//Method 1:
+//sort, two pointers ,similiar idea as merge sort
 
 class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
@@ -44,3 +49,29 @@ class Solution {
         return res;
     }
 }
+
+//Method 2: HashMap
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> map = new HashMap<>(); //val:cnt
+        List<Integer> result = new ArrayList<>();
+        
+        for (int i=0; i<nums1.length; i++){
+            map.put(nums1[i], map.containsKey(nums1[i])? map.get(nums1[i])+1:1);
+        }
+        
+        for (int i=0; i<nums2.length; i++){
+            if (map.containsKey(nums2[i])) {
+                result.add(nums2[i]);
+                if (map.get(nums2[i]) == 1) map.remove(nums2[i]);
+                else map.put(nums2[i], map.get(nums2[i])-1);
+            }
+        }
+        
+        int[] res = new int[result.size()];
+        int i = 0;
+        for (int k:result) res[i++] = k;
+        return res;
+    }
+}
+
