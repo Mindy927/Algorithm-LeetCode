@@ -38,6 +38,7 @@ class Solution {
             int rootY = find(y);
             if (rootX==rootY) return;
             parent[rootY] = rootX;
+            n--;
         }
         
     }
@@ -50,6 +51,6 @@ class Solution {
             else return false;
         }
         
-        return edges.length == n - 1;
+        return uf.n==1; //only 1 root
     }
 }
