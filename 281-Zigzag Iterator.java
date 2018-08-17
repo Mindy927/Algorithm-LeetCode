@@ -62,23 +62,24 @@ public class ZigzagIterator {
  */
 
 
- //Method2 :Two iterators, one for each list. Switching them before reading the next number 
+ //Method2 : a list of iterators, one for each vector
 
- public class ZigzagIterator {
-
-    private Iterator<Integer> i, j, tmp;
-
+public class ZigzagIterator {
+    LinkedList<Iterator> list;
     public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
-        i = v2.iterator();
-        j = v1.iterator();
+        list = new LinkedList<Iterator>();
+        if(!v1.isEmpty()) list.add(v1.iterator());
+        if(!v2.isEmpty()) list.add(v2.iterator());
     }
 
     public int next() {
-        if (j.hasNext()) { tmp = j; j = i; i = tmp; }
-        return i.next();
+        Iterator poll = list.remove();
+        int result = (Integer)poll.next();
+        if(poll.hasNext()) list.add(poll);
+        return result;
     }
 
     public boolean hasNext() {
-        return i.hasNext() || j.hasNext();
+        return !list.isEmpty();
     }
 }
