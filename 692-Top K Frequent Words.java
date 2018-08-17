@@ -16,6 +16,7 @@ Explanation: "the", "is", "sunny" and "day" are the four most frequent words,
 
 Author: Mindy927 */
 
+//heap
 class Solution {
     public List<String> topKFrequent(String[] words, int k) {
         Map<String, Integer> map = new HashMap<>();
@@ -40,6 +41,36 @@ class Solution {
              result.add(pq.poll());
          }
         
+        return result;
+    }
+}
+
+//bucket sort
+class Solution {
+    public List<String> topKFrequent(String[] words, int k) {
+        List<String> result = new ArrayList<>();
+        int n = words.length;
+        List<String>[] bucket = new List[n]; //bucket[i]: a list of strings with frequency i
+        Map<String, Integer> map = new HashMap<>(); //word:cnt
+        
+        for (String word:words)
+            map.put(word, map.containsKey(word)? map.get(word)+1:1);
+        
+        for(String word:map.keySet()){
+            int cnt = map.get(word);
+            if (bucket[cnt] == null) bucket[cnt] = new ArrayList<>();
+            bucket[cnt].add(word);
+        }
+        
+        for(int i=n-1; i>=0 && k>0; i--){
+            if (bucket[i]!=null){
+                List<String> strs = bucket[i];
+                Collections.sort(strs); //alphabetic increasing
+                for (String str:strs){
+                    if ( k-- > 0) result.add(str);
+                }
+            }
+        }
         return result;
     }
 }
