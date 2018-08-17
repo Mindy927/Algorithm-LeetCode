@@ -62,24 +62,23 @@ public class ZigzagIterator {
  */
 
 
- //Method2 : a list of iterators, one for each vector
-
+ //Method2 : a queue of iterators, one for each vector
 public class ZigzagIterator {
-    LinkedList<Iterator> list;
+    Queue<Iterator> q;
     public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
-        list = new LinkedList<Iterator>();
-        if(!v1.isEmpty()) list.add(v1.iterator());
-        if(!v2.isEmpty()) list.add(v2.iterator());
+        q = new LinkedList<>();
+        if ( v1.size() > 0 ) q.add(v1.iterator());
+        if ( v2.size() > 0 ) q.add(v2.iterator());
     }
 
     public int next() {
-        Iterator poll = list.remove();
-        int result = (Integer)poll.next();
-        if(poll.hasNext()) list.add(poll);
+        Iterator cur = q.poll();
+        int result = (int) cur.next();
+        if (cur.hasNext()) q.offer(cur);
         return result;
     }
 
     public boolean hasNext() {
-        return !list.isEmpty();
+        return !q.isEmpty();
     }
 }
