@@ -14,62 +14,60 @@ Author: Mindy927 */
 
 class Solution {
     class TrieNode{
-        int index = -1;
+        int index = -1; //index of word ends at current trieNode
+        List<Integer> list = new ArrayList<>();
         TrieNode[] children = new TrieNode[26];
-        //List of indices of words whose rest of substring(till the end node) is palindrome. 
-        //Example: words[9] = sscba, 9 is stored at TrieNode 's', since 'ss' is palindrome. 
-        List<Integer> list = new ArrayList<>(); 
-        public TrieNode() {}
+        public TrieNode(){}
     }
     
-    TrieNode root;
+    TrieNode head;
     public List<List<Integer>> palindromePairs(String[] words) {
-        root = new TrieNode();
+        head = new TrieNode();
         List<List<Integer>> result = new ArrayList<>();
         for (int i=0; i<words.length; i++){
-            addToDict(words[i],i);
-        }
-        for (int i=0; i<words.length; i++){
-            search(words, i, result);
+            addToDict(words[i], i);
         }
         
+        for (int i=0; i<words.length; i++){
+            search(words[i], i, result);
+        }
         return result;
     }
     
-    public void search(String[] words, int i, List<List<Integer>> result){
-           TrieNode cur = root;
-           for (int j=0; j<words[i].length(); j++){
-                char c = words[i].charAt(j);
-                if (isPalindrome(words[i],j,words[i].length()-1) && cur.index!=i && cur.index !=-1){ 
-                    // words[i] = abcc  cur=a->b->End  ==>abcc ba
-                    result.add(Arrays.asList(i, cur.index));
-                }
-                if (cur.children[c-'a']==null) return;
-                cur = cur.children[c-'a'];
-            }
-            
-           //words[i] = ab  cur=a->b->cc (reverse order)  ==>ab ccba
-            for (int k:cur.list){
-                if (i!=k) result.add(Arrays.asList(i, k));
-            }
-    }
-    
-    public void addToDict(String word, int k){
-        TrieNode cur = root;
-        for (int i=word.length()-1; i>=0; i--){ //Store words reversely 
+    public void addToDict(String word, int idx){ 
+        TrieNode cur = head;
+        for (int i=word.length()-1; i>=0; i--){//add word reversely to dict
             char c = word.charAt(i);
-            if (isPalindrome(word, 0, i)) cur.list.add(k);
-            if (cur.children[c - 'a']==null) cur.children[c - 'a'] = new TrieNode();
-            cur = cur.children[c - 'a'];
+            if (isPalindrome(word.substring(0,i+1))) cur.list.add(idx);  //[0,i] is palindrome
+            if (cur.children[ c - 'a'] == null) cur.children[ c -'a' ] = new TrieNode();
+            cur = cur.children[ c - 'a' ];
         }
-        cur.list.add(k);
-        cur.index = k;
+        cur.index = idx;
+        cur.list.add(idx); //dont forget to node ends at index at curent node
     }
     
-    public boolean isPalindrome(String word, int i, int j){
+    public void search(String word, int idx, List<List<Integer>> result){
+        TrieNode cur = head;
+        for (int i=0; i<word.length(); i++){
+            char c = word.charAt(i);
+            if (isPalindrome(word.substring(i)) && cur.index!= idx && cur.index!=-1) //abss & ba
+                result.add(Arrays.asList(idx, cur.index)); 
+            if (cur.children[ c - 'a'] == null) return;
+            cur = cur.children[ c - 'a'];
+        }
+        
+        for(int k:cur.list){ //ab & llab
+            if (idx==k) continue;
+            result.add(Arrays.asList(idx, k));
+        }
+    }
+    
+    public boolean isPalindrome(String str){
+        int i = 0, j = str.length()-1;
         while (i < j){
-            if (word.charAt(i++)!=word.charAt(j--)) return false;
+            if (str.charAt(i) != str.charAt(j)) return false;
+            i++; j--;
         }
         return true;
-    }
+    }   
 }
