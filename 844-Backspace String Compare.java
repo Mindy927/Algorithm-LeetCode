@@ -44,3 +44,23 @@ class Solution {
         return String.valueOf(stack);
     }
 }
+
+//Method 2: O(N) time O(1) space 
+//scan from right to left, cnt++ for "#", cnt-- otherwise, append to sb when cnt = 0
+class Solution {
+    public boolean backspaceCompare(String S, String T) {
+        return helper(S).equals(helper(T));
+    }
+    
+    public String helper(String s){
+        StringBuilder sb = new StringBuilder();
+        int cnt = 0;
+        for (int i=s.length()-1; i>=0; i--){
+            char c = s.charAt(i);
+            if (cnt == 0 & c!='#') sb.append(c);
+            else if (c == '#') cnt++;
+            else cnt--;
+        }
+        return sb.toString();
+    }
+}
