@@ -33,6 +33,8 @@ Author: Mindy927*/
  *     TreeNode(int x) { val = x; }
  * }
  */
+
+//Method 1: O(n), recursion
 class Solution {
     public void recoverTree(TreeNode root) {
         if (root==null) return;
@@ -78,4 +80,40 @@ class Solution {
         update(node.right, prev, target);
     }
     
+}
+
+
+
+//Method 2: In order traversal, O(1)
+//In order traversal to find numbers to be swapped, update global variable along the way
+class Solution {
+    TreeNode first; //first element to be swapped, larger than the number after it
+    TreeNode second; //second element smaller than its previous number
+    TreeNode prev;
+    public void recoverTree(TreeNode root) {
+        first = null;
+        second = null;
+        prev = null;
+        
+        traverse(root); //find first and second elements
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
+    }
+    
+    public void traverse(TreeNode root){
+        if (root == null) return;
+        
+        traverse(root.left); //inorder: left -> root -> right
+        
+        if (first == null && prev!=null && prev.val > root.val){  //update first only when its null!
+            first = prev;
+        }
+        if (first!=null && prev.val > root.val){
+            second = root;    
+        } 
+        prev = root;
+          
+        traverse(root.right);
+    }
 }
