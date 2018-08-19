@@ -21,7 +21,7 @@ class Solution {
         
         Arrays.sort(strs, new Comparator<String>(){
            public int compare(String a, String b){
-               return (b+a).compareTo(a+b); //increasing order, revert when append
+               return (b+a).compareTo(a+b); // Descending order
            } 
         });
         
