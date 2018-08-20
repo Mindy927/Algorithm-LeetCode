@@ -28,44 +28,43 @@ Queue can attack each other in the same row, same col, same diagnal
 Author: Mindy927 */
 
 class Solution {
+    //fill row by row, update vistedCol,visitedDiag matrix
     public List<List<String>> solveNQueens(int n) {
-        boolean[] col = new boolean[n];
-        boolean[] diag1 = new boolean[2*n-1];  //mark diagonal[k] as visited; k = j - i + n-1
-        boolean[] diag2 = new boolean[2*n-1]; // mark diagonal[k] as visited; k = i + j
-            
-        List<List<String>> result = new ArrayList<>();
+        //boolean[] visitedRow = new boolean[n];
+        boolean[] visitedCol = new boolean[n];
+        boolean[] visitedDiag1 = new boolean[2*n-1]; //mark diagonal[k] as visited; k = i + j
+        boolean[] visitedDiag2 = new boolean[2*n-1]; //mark diagonal[k] as visited; k = j - i + n-1
         List<String> temp = new ArrayList<>();
-        helper(n, 0, col, diag1, diag2, temp, result);
+        List<List<String>> result = new ArrayList<>();
+        
+        dfs(visitedCol, visitedDiag1, visitedDiag2, n, 0, temp, result);
         return result;
     }
     
-    public void helper(int n, int row, boolean[] col, boolean[] diag1, boolean[] diag2, List<String> temp, List<List<String>> result){
-        if (row == n) { //pass row+1 to next round, Add result at next round
-            result.add(new ArrayList<>(temp));
+    public void dfs(boolean[] visitedCol, boolean[] visitedDiag1, boolean[] visitedDiag2, int n, int i, List<String> temp, List<List<String>> result){
+        if (i == n){
+            if (temp.size()==n) result.add(new ArrayList<>(temp));
             return;
         }
-    
+        
         //For each row, for loop choose all possible cols for Q based on visited boolean[]
-      for (int j=0; j<n; j++){
-            if (!col[j] && !diag1[j-row+n-1] && !diag2[row+j]) {
-                col[j] = true;
-                diag1[j-row+n-1] = true;
-                diag2[row+j] = true;
-                StringBuilder sb = new StringBuilder();
-                for (int k=0; k<n; k++){
-                    if (k==j) sb.append("Q");
-                    else sb.append(".");
-                }
-                temp.add(sb.toString());
-                helper(n, row+1, col, diag1,diag2, temp, result);
-                temp.remove(temp.size()-1);
-                col[j] = false;
-                diag1[j-row+n-1] = false;
-                diag2[row+j] = false;
-            }
+        for (int j=0; j<n; j++){
+            if (visitedCol[j] || visitedDiag1[i+j] || visitedDiag2[i-j+n-1]) continue;
+            char[] chars = new char[n];
+            Arrays.fill(chars, '.');
+            chars[j] = 'Q';
+            
+            temp.add(String.valueOf(chars));
+            visitedCol[j] = true;
+            visitedDiag1[i+j] = true;
+            visitedDiag2[i-j+n-1] = true;
+            dfs(visitedCol, visitedDiag1, visitedDiag2, n, i+1, temp, result);//search next row
+            visitedCol[j] = false;
+            visitedDiag1[i+j] = false;
+            visitedDiag2[i-j+n-1] = false;
+            temp.remove(temp.size()-1);
         }
     }
 }
-
 
 
