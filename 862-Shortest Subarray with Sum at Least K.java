@@ -26,6 +26,10 @@ Deque
 (1) Sum Array, Sum [i] keeps sum of nums[0] to nums[i-1]
 (2) Deque of index i such that sum[i] is increasing (MonoQueue)
 Only when sum[i] is increasing it can be next possible 
+
+Consider x < y with sum[x] <= sum[y] + K
+if x1 < x2 and sum[x1] >= sum [x2] (decrease), x2 is a better solution than x1 since sum[y] - sum [x2] >= sum[y] - sum[x1]
+poll x1 and maintain deque increase
 */
 
 class Solution {
