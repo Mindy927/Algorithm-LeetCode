@@ -22,7 +22,7 @@ Author: Mindy927*/
 /*
 Key Idea:
 Since rectangle area grows when height of bar is increasing -> safe to push to stack for increasing height
-When height deceasing for bar i, we need to check current maxArea till i-1 based on bars in stack, since area grows until i-1
+When height deceasing for bar i, we need to check current maxArea till i-1, since area grows till i-1
 and update global max. (opposite of #42)
  */
 
