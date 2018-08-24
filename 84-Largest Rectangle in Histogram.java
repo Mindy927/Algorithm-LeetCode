@@ -26,6 +26,7 @@ When height deceasing for bar i, we need to check current maxArea till i-1, sinc
 and update global max. (opposite of #42)
  */
 
+// O(n), O(n)
 class Solution {
     public int largestRectangleArea(int[] heights) {
         Stack<Integer> stack = new Stack<>(); //Keep indices
@@ -39,7 +40,7 @@ class Solution {
             } else{
                 int cur = stack.pop();
                 //stack is empty means it reaches the start of the bar, dist = i
-                int dist = stack.isEmpty()? i: i - stack.peek() - 1; 
+                int dist = stack.isEmpty()? i: i - stack.peek() - 1;  // dist between previous index in stack (excluding) and i(excliding) has height cur
                 int curMax = dist * heights[cur];
                 max = Math.max(max, curMax);
             }
