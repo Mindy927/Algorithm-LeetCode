@@ -31,7 +31,7 @@ class Solution {
             }
         });
         
-        //min heap based on end points
+        //min heap based on end points, merge with non-overlapping meeting rooms ends first 
         PriorityQueue<Interval> pq = new PriorityQueue<Interval>(intervals.length, new Comparator<Interval>(){
            public int compare(Interval a, Interval b){
                return a.end - b.end;
