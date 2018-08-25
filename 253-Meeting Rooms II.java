@@ -21,6 +21,7 @@ Author: Mindy927 */
  *     Interval(int s, int e) { start = s; end = e; }
  * }
  */
+//O(nlgn)
 class Solution {
     public int minMeetingRooms(Interval[] intervals) {
         if (intervals.length==0) return 0;
