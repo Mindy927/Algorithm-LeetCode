@@ -7,33 +7,33 @@ Input: 1->2->4, 1->3->4
 Output: 1->1->2->3->4->4
 Author: Mindy927*/
 
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
 class Solution {
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         ListNode dummy = new ListNode(0);
         ListNode prev = dummy;
-        ListNode cur = null;
-        dummy.next = cur;
-        
-        while (l1!=null || l2!=null){
-            if (l1!=null && l2!=null) {
-                if (l1.val < l2.val) {
-                    cur = new ListNode(l1.val);
-                    l1 = l1.next;
-                }else{
-                    cur = new ListNode(l2.val);
-                    l2 = l2.next;
-                }
-            } else if (l1==null){
-                cur = new ListNode(l2.val);
-                l2 = l2.next;
-            } else{
-                cur = new ListNode (l1.val);
+        while (l1!=null && l2!=null){
+            if (l1.val <= l2.val){
+                prev.next = l1;
+                prev = l1;
                 l1 = l1.next;
+            } else {
+                prev.next = l2;
+                prev = l2;
+                l2 = l2.next;
             }
-            prev.next = cur;
-            prev = cur;
         }
         
-        return dummy.next;
+       if (l1!=null) prev.next = l1;
+       else prev.next = l2;
+
+       return dummy.next;
     }
 }

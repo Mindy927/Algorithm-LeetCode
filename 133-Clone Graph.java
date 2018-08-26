@@ -49,7 +49,7 @@ public class Solution {
         
         //clone node
         UndirectedGraphNode copy = new UndirectedGraphNode(node.label);
-        map.put(copy.label, copy);
+        map.put(copy.label, copy); 
         //clone neighbors
         for (UndirectedGraphNode nei:node.neighbors){
             copy.neighbors.add(clone(nei));

@@ -29,7 +29,7 @@ class Solution {
         
         int n = s.length();
         boolean[] dp = new boolean[n+1];
-        //dp[i] is true if s.substring(0,j) are in dict
+        //dp[i] is true if s.substring(i,j) are in dict && dp[j] is true
         dp[0] = true;
         for (int i=1; i<n+1; i++){
             for (int j=i; j<n+1; j++){

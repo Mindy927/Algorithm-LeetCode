@@ -29,8 +29,7 @@ Author: Mindy927*/
 
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        // [] , [[]] both list & ListNode can be null
-        if (lists ==null || lists.length==0) return null; 
+        if (lists ==null ) return null; 
         
         Queue<ListNode> q = new PriorityQueue<ListNode>(lists.length, new Comparator<ListNode>(){
             public int compare(ListNode a, ListNode b){
@@ -38,8 +37,8 @@ class Solution {
             }
         }); 
         
-        for (ListNode node:lists){ //Add head nodes to lists
-            if (node!=null) q.offer(node);
+        for (ListNode node:lists){ //Add head nodes to lists, add when its not null!!
+            if (node!=null) q.offer(node); 
         }
         
         ListNode dummy = new ListNode(0);

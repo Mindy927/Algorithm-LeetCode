@@ -24,6 +24,7 @@ Method 3: QuickSelect
 */
 
 //min heap
+//time: O(nlgn) / space:O(k)
 class Solution {
     public int findKthLargest(int[] nums, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
@@ -39,3 +40,40 @@ class Solution {
 
 
 //quick select
+//time: O(N) best case, O(N^2) worse case,  space: O(1)
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int left = 0, right = nums.length-1, target = nums.length-k;//k-th largest is at index n-k
+        
+        //binary search
+        while (left < right){
+            int cur = quickSort(nums, left, right);
+            if (cur == target)  return nums[target];
+            else if (cur < target) left = cur + 1;
+            else right = cur - 1;
+        }
+        return nums[target];
+    }
+    
+    //quick select, similar to sort colors
+    public int quickSort(int[] nums, int left, int right){
+        int pivot = nums[right]; //pick last element as pivot
+        int i=left;
+        //right is next position to swap when num>pivot, its value is not verified, has to check when i==right
+        while (i <= right){  
+            if (nums[i] < pivot) {
+                swap(nums, left, i);
+                if (i==left) i++;
+                left++;
+            }else if (nums[i]> pivot) swap(nums, right--,i);
+            else i++;
+        }
+        return left;
+    }
+    
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
