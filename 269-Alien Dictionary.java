@@ -45,60 +45,57 @@ Author:Mindy927*/
 
 class Solution {
     public String alienOrder(String[] words) {
-        Map<Character, Set<Character>> map = new HashMap<>(); //char: all chars after current char
-        Map<Character, Integer> indegree = new HashMap<>();//indegree for each char
+        int[] indegree = new int[26];
+        Arrays.fill(indegree, -1); //-1 indicates all chars are not appeared in words
+        Map<Character, Set<Character>> map = new HashMap<>(); //str: all strings with current str as their pre-req
         
-        //add indegree 0 for all chars
+        //1. building indegree, chars appeared with indegree 0, otherwise -1
         for (String word:words){
-            for (char c:word.toCharArray()){
-                indegree.put(c, 0);
+            for (int i=0; i<word.length(); i++){
+                char c = word.charAt(i);
+                if(indegree[c - 'a'] == -1) indegree[c - 'a'] = 0;
             }
         }
         
-        //for each adjacent pair, find first char that differ and add to pre-req map, break
+        //2. for each adjacent pair of words, find first char that differ, add to pre-req map, break, only update map when encouter preReq ->char relationship at first time
         for (int i=0; i<words.length-1; i++){
-            String str1 = words[i];
-            String str2 = words[i+1];
-            int j=0;
-            for (;j<Math.min(str1.length(), str2.length()); j++){
-                char c1 = str1.charAt(j);
-                char c2 = str2.charAt(j);
-                if (c1 == c2) continue;    
-                if (!map.containsKey(c1)) map.put(c1, new HashSet<>());
-                if (map.containsKey(c2) && map.get(c2).contains(c1)) return ""; //c2 < c1, loop
-                //add indegree only when encounter c1,c2 pair at first time
-                if (!map.get(c1).contains(c2)) {// c1 is new pre-req for c2
-                    indegree.put(c2, indegree.get(c2)+1); 
-                    map.get(c1).add(c2); 
+            String cur = words[i];
+            String next = words[i+1];
+            for (int j=0; j<Math.min(cur.length(), next.length()); j++){
+                char preReq = cur.charAt(j);
+                char c = next.charAt(j);
+                if (preReq == c) continue;
+                Set<Character> temp = map.containsKey(preReq)? map.get(preReq):new HashSet<>();
+                if (!temp.contains(c)){ //first time of:preReq->c
+                    indegree[c - 'a']++;
+                    temp.add(c);
                 }
-                break; 
+                map.put(preReq, temp);
+                break;
             }
         }
         
-        //add chars with 0 indegree to queue
+        //3. topology sort
         Queue<Character> q = new LinkedList<>();
-        for(char c:indegree.keySet()){
-            if (indegree.get(c) == 0) q.offer(c);
+        for (int i=0; i<26; i++){
+            if (indegree[i] == 0) q.offer((char)(i+'a'));
         }
         
-        //bfs
         StringBuilder sb = new StringBuilder();
         while (!q.isEmpty()){
             char cur = q.poll();
             sb.append(cur);
-            indegree.remove(cur); //remove from indegree map when current char has been used
             if (!map.containsKey(cur)) continue;
-            for (char next:map.get(cur)){
-                if (indegree.get(next) > 0){
-                    indegree.put(next, indegree.get(next)-1);
-                    if (indegree.get(next)==0) {
-                        q.offer(next);
-                    }
-                }
+            for(char c:map.get(cur)){
+                indegree[c - 'a']--;
+                if (indegree[c - 'a'] == 0) q.offer(c);
             }
         }
+        //return "" when any char with indegree not -1 or 0
+        for (int i=0; i<26; i++){
+            if (!(indegree[i]==0 || indegree[i]==-1)) return "";
+        }
         
-        
-        return indegree.isEmpty()? sb.toString():""; //make sure all chars has been used before return
+        return sb.toString();
     }
 }
