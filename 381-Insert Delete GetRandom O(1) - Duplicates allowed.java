@@ -37,6 +37,11 @@ Author: Mindy927*/
 
 linkedHashSet<>(), get O(1), hashSet get O(n/h)，h is the normal tabel capacity
 */
+/*  Comparision with #146 LRU cache:
+for LRU cache, order matters, we need doubly-linked-list to move nodes
+for getRandom, order doesnot matter, a linked list with map storing index is enough
+*/
+
 class RandomizedCollection {
     ArrayList<Integer> nums; //vals
     Map<Integer, Set<Integer>> map; //val:a set of indices with same val
