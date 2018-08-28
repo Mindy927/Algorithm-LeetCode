@@ -26,6 +26,7 @@ Author:Mindy927  */
     Double Linked List to keep tack of keys requested, least recent -> most recent
     HashMap to store key:DNode 
     Move nodes to end of list when requested (delete node & add node again)
+    when delete, update both map and linkedlist
     */
     
 class LRUCache {
@@ -88,7 +89,7 @@ class LRUCache {
             add(node);
             map.put(key, node);
             cnt++;
-            if (cnt > capacity) { //remove head.next 
+            if (cnt > capacity) { //remove head.next
                 map.remove(head.next.key); 
                 delete(head.next);
                 cnt--;
