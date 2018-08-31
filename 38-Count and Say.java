@@ -27,27 +27,30 @@ Author: Mindy927*/
 
 class Solution {
     public String countAndSay(int n) {
-        String res = "1";
-        while (n-- > 1){
-            res = helper(res);
+        if (n == 1) return "1";
+        
+        String s = "1";
+        for (int i=1; i<n; i++){
+            s = countOnce(s);
         }
-        return res;
+        return s;
     }
     
     //count once
-    public String helper(String str){
-        char[] chars = str.toCharArray();
-    
-        int cnt = 1, n = chars.length;
+    public String countOnce(String s){
+        char curChar = s.charAt(0);
+        int cnt = 1; //cnt 1 for first char
         StringBuilder sb = new StringBuilder();
-        for (int i=1; i<n; i++){
-            if (chars[i] == chars[i-1]) cnt++;
+        for (int i=1; i<s.length(); i++){
+            char c = s.charAt(i);
+            if ( c == curChar) cnt++;
             else {
-                sb.append( String.valueOf(cnt) + chars[i-1]);
+                sb.append(String.valueOf(cnt) + curChar); //convert cnt to String first
+                curChar = c;
                 cnt = 1;
             }
         }
-        sb.append( String.valueOf(cnt) + chars[n-1]);
+        sb.append(String.valueOf(cnt) + curChar);
         return sb.toString();
     }
 }
