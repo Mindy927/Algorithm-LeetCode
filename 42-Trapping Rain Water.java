@@ -12,7 +12,8 @@ Output: 6
 Author: Mindy927 */
 
 /*
-Method 1: Stack : stack stores the indices of bars
+Method 1: Stack  O(n)/ O(n)
+stack stores the indices of bars
 Push to stack when cur <= stack.peek() since:
 — current bar is left bounded by previous bars in stack
 Pop from stack when cur > stack.peek() since:
@@ -20,28 +21,57 @@ Pop from stack when cur > stack.peek() since:
 */
 class Solution {
     public int trap(int[] height) {
-       int result = 0, i = 0;
-       Stack<Integer> stack = new Stack<>();
-         
-       while ( i < height.length) {
-           //Compare with height[stack.peek()] NOT stack.peek()
-           if (stack.isEmpty() || height[stack.peek()] >= height[i]) stack.push(i++); 
-           else {
+        Stack<Integer> stack = new Stack<>();
+        
+        int res = 0;
+        for (int i=0; i<height.length; i++){
+            /*pop all the bar bounded by current bar i and previous bar on the stack
+              for case [7,4,3,5], when reach 5, pop 3, 4
+            */
+            while (!stack.isEmpty() && height[stack.peek()] <= height[i]){ 
                 int cur = stack.pop();
                 if (stack.isEmpty()) continue;
                 //distance between ith bar(right boundary) and second last bar in stack(left boundary)
-                int dist = i - stack.peek() - 1; 
+                int dist = i - stack.peek() - 1;
                 int h = Math.min(height[stack.peek()], height[i]) - height[cur];
-                result += dist * h;
-           }
-       }
+                res += h * dist;
+            }
+            stack.push(i);
+        }
         
-       return result;
+        return res;
     }
 }
 
 
-// Method 2: DP, O(n) / O(n)
+//Method 2: Two pointers, O(n)/O(1)
+/*If there is a larger bar at the other side(say right), water trapped is dependent on the current direction(left->right),left++
+Once the bar at the other side is lower, we iterate in opposite direction(right->left)
+*/
+class Solution {
+    public int trap(int[] height) {
+        int left = 0, right = height.length-1;
+        int leftMax = 0, rightMax = 0;
+        int res = 0;
+        
+        while (left < right){
+          if (height[left] <= height[right]){
+              if (height[left] > leftMax) leftMax = height[left];
+              else res += leftMax - height[left]; //since rightMax is larger, water trapped only depent on leftMax
+              left++; //rightMax is larger, water trapped depending on direction left->right
+          }else{
+              if (height[right] > rightMax) rightMax = height[right];
+              else res += rightMax - height[right];
+              right--;
+          }
+        }
+        
+        return res;
+    }
+}
+
+
+// Method 3: DP, O(n) / O(n)
 class Solution {
     public int trap(int[] height) {
         if (height.length == 0) return 0;
