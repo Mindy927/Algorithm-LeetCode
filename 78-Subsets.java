@@ -20,6 +20,7 @@ Output:
 
 Author: Mindy927 */
 
+//Method 1: DFS
 class Solution {
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
@@ -39,5 +40,25 @@ class Solution {
             dfs(nums, i+1, temp, result);
             temp.remove(temp.size()-1);
         }
+    }
+}
+
+//Method 2:BFS
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        
+        //BFS, for each num, add to previous list(maintain previous list)
+        List<Integer> empty = new ArrayList<>();
+        res.add(empty);
+        for (int i=0; i<nums.length; i++){
+            int size = res.size();
+            for (int s=0; s<size; s++){
+                List<Integer> copy = new ArrayList<>(res.get(s)); //copy and add nums[i]
+                copy.add(nums[i]);
+                res.add(copy);
+            }
+        }
+        return res;
     }
 }
