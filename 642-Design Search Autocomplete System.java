@@ -118,7 +118,7 @@ class AutocompleteSystem {
         List<String> temp = search(cur);
         PriorityQueue<String> pq = new PriorityQueue<String>(new Comparator<String>(){
            public int compare(String a, String b){
-               if (map.get(a) != map.get(b)) return map.get(a) - map.get(b); //min heap
+               if (map.get(a) != map.get(b)) return map.get(a) - map.get(b); //min heap,poll least hotness sentence first
                else return b.compareTo(a);//max heap
            } 
         });
