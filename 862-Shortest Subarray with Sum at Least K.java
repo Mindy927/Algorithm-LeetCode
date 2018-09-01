@@ -43,10 +43,10 @@ class Solution {
         Deque<Integer> q = new ArrayDeque<>(); //deque of indices
         int min = n+1; 
         for (int i=0; i < n+1; i++){
-            while (!q.isEmpty() && sum[i] - sum[q.peekFirst()]>=K) 
+            while (!q.isEmpty() && sum[i] - sum[q.peekFirst()]>=K) //poll first to find shortest subArray >= K
                 min = Math.min(min, i - q.pollFirst());
             
-            while (!q.isEmpty() && sum[q.peekLast()]>= sum[i])  //Maintain MonoQueue
+            while (!q.isEmpty() && sum[q.peekLast()]>= sum[i])  //poll last to maintain MonoQueue
                 q.pollLast();
             q.addLast(i);
         }
