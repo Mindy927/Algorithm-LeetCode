@@ -14,39 +14,47 @@ Output: 7 -> 8 -> 0 -> 7
 
 Author: Mindy927*/
 
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-         Stack<Integer> s1 = new Stack<>();
-         Stack<Integer> s2 = new Stack<>();
-         Stack<Integer> res = new Stack<>();
-         int carry = 0;
+        Stack<ListNode> stack1 = new Stack<>();
+        Stack<ListNode> stack2 = new Stack<>();
+        Stack<ListNode> res = new Stack<>();
         
-        while (l1!= null) {
-            s1.push(l1.val);
+        while (l1 != null){
+            stack1.push(l1);
             l1 = l1.next;
         }
         
-        while (l2!= null){
-            s2.push(l2.val);
+        while (l2 != null){
+            stack2.push(l2);
             l2 = l2.next;
         }
         
-        while (!s1.isEmpty() || !s2.isEmpty()){  ///Sum when at least 1 stack is not empty
-            int temp1 = s1.isEmpty()? 0:s1.pop();
-            int temp2 = s2.isEmpty()? 0:s2.pop();
-            int sum = temp1 + temp2 + carry;
+        int sum = 0, carry = 0;
+
+        //building result list from least significant bit
+        ListNode head = null; 
+        while (!stack1.isEmpty()|| !stack2.isEmpty()){
+            sum = carry + (stack1.isEmpty()? 0:stack1.pop().val) + (stack2.isEmpty()? 0:stack2.pop().val);
             carry = sum/10;
-            res.push(sum%10);
+            ListNode cur = new ListNode(sum%10);
+            cur.next = head;
+            head = cur;
         }
-        
-        if (carry!=0) res.push(carry);
-        
-        ListNode dummy = new ListNode(0);
-        ListNode cur = dummy;
-        while (!res.isEmpty()){
-            cur.next = new ListNode(res.pop());
-            cur = cur.next;
+        if (carry!=0) {
+            ListNode cur = new ListNode(carry);
+            cur.next = head;
+            head = cur;
         }
-        return dummy.next;
+       
+        return head;
     }
 }
