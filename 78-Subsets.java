@@ -30,7 +30,7 @@ class Solution {
     }
     
     public void dfs(int[] nums, int start, List<Integer> temp, List<List<Integer>> result){
-        result.add(new ArrayList<>(temp));
+        result.add(new ArrayList<>(temp)); //for loop are used for adding 1 num, we may not add number in this round, add temp to res first
         if (start == nums.length) return;
         
         for (int i=start; i<nums.length; i++){ //num to add in this round can be any number from start
