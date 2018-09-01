@@ -23,6 +23,8 @@ i iterates string s, build unvisited = new HashMap<>(map) for each i
 and try to clear unvisited words, add to result when unvisited is empty
 */
 
+
+//Method 1: Two map, copy to unvisited map for each possible index i, verify and add to result
 class Solution {
     public List<Integer> findSubstring(String s, String[] words) {
         List<Integer> result = new ArrayList<>();
@@ -48,5 +50,63 @@ class Solution {
         }
         
         return result;
+    }
+}
+
+
+//Method 2: Sliding window
+class Solution {
+    //[## idea ##]
+    // Sliding Window
+    
+    // ask interviewer if words is empty, should I return empty list
+    // words list contains duplicated word?
+    
+    public List<Integer> findSubstring(String S, String[] L) {
+        List<Integer> res = new LinkedList<>();
+        //input validation
+        if (L.length == 0 || S.length() < L.length * L[0].length())   return res;
+        
+        int N = S.length(), M = L.length, K = L[0].length();
+        Map<String, Integer> map = new HashMap<>(), curMap = new HashMap<>();
+        
+        for (String s : L) {
+            map.put(s, map.getOrDefault(s,0)+1);
+        }
+        String str = null, tmp = null;
+        //traverse all the posibilities
+        for (int i = 0; i < K; i++) {
+            int count = 0;  // remark: reset count 
+            //l is the start point, r+k is the end point
+            for (int l = i, r = i; r + K <= N; r += K) {
+                str = S.substring(r, r + K);
+                if (map.containsKey(str)) {
+                    curMap.put(str, curMap.getOrDefault(str,0) + 1);
+                    
+                    if(curMap.get(str) <= map.get(str)) count++;
+                    //move l
+                    while (curMap.get(str) > map.get(str)) {
+                        tmp = S.substring(l, l + K);
+                        curMap.put(tmp, curMap.get(tmp) - 1);
+                        l += K;
+                        if (curMap.get(tmp) < map.get(tmp)) count--;
+                    }
+                    
+                    if (count == M) {
+                        res.add(l);
+                        tmp = S.substring(l, l + K);
+                        curMap.put(tmp, curMap.get(tmp) - 1);
+                        l += K;
+                        count--;
+                    }
+                }else {
+                    curMap.clear();
+                    count = 0;
+                    l = r + K;
+                }
+            }
+            curMap.clear();
+        }
+        return res;
     }
 }
