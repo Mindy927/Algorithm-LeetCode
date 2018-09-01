@@ -14,24 +14,22 @@ Author: Mindy927 */
 
 class Solution {
     public String largestNumber(int[] nums) {
-        String[] strs = new String[nums.length];
-        for (int i=0; i<nums.length; i++){
-            strs[i] = String.valueOf(nums[i]);
-        }
-        
-        Arrays.sort(strs, new Comparator<String>(){
-           public int compare(String a, String b){
-               return (b+a).compareTo(a+b); // Descending order
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>(){
+           public int compare(Integer a, Integer b){
+               String order1 = String.valueOf(a) + String.valueOf(b);
+               String order2 = String.valueOf(b) + String.valueOf(a);
+               return order2.compareTo(order1); //max heap
            } 
         });
         
-        if (strs[0].equals("0")) return "0"; //corner case
+        for (int num:nums) pq.offer(num);
         
         StringBuilder sb = new StringBuilder();
-        for (int i=0; i<strs.length; i++){
-            sb.append(strs[i]);
+        if (pq.peek() == 0) return "0"; //corner case[0,0]
+        while (!pq.isEmpty()){
+            sb.append(pq.poll());
         }
-        return sb.toString();
         
+        return sb.toString();
     }
 }
