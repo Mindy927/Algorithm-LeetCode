@@ -19,19 +19,20 @@ Author: Mindy927 */
 
 class Solution {
     public void sortColors(int[] nums) {
-        int left=0, right = nums.length-1, i=0;
-        while (i<=right){
-            if (nums[i]==0){
+        int left = 0, right = nums.length-1; //left:swap pos when we found 0; right:swap pos when we found 2
+        int i = 0;
+        while (i<=right){ //right+1 is first 2, still need to check when i==right
+            if (nums[i] == 0){
                 swap(nums, i, left);
-                if (left == i) i++; //we swap nums[i] with itself, increase both i and left
                 left++;
-            } else if (nums[i] == 2){
-                //not sure whats the number swapped back to nums[j], has to verify in the next round, doesnot i++
-                swap(nums, i, right); 
-                right--;
-            } else i++;
+                i++;
+            }else if (nums[i] == 2){
+                swap(nums, i, right);
+                right--; //No need to i++, since we still need to check the number swapped back from pos right
+            }else {
+                i++;
+            }
         }
-       
     }
     
     public void swap(int[] nums, int i, int j){
