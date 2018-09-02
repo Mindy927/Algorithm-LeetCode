@@ -35,48 +35,78 @@ Please do not use the built-in Queue library.
 
 Author: Mindy927 */
 class MyCircularQueue {
-    List<Integer> list;
+    class ListNode{
+        int val;
+        ListNode next;
+        public ListNode(int val){
+            this.val = val;
+        }
+    }
+    
     int size;
+    int cnt;
+    ListNode head;
+    ListNode tail;
     /** Initialize your data structure here. Set the size of the queue to be k. */
     public MyCircularQueue(int k) {
-        list = new ArrayList<>();
-        this.size = k;
+        size = k;
+        cnt = 0;
+        head = new ListNode(0);
+        tail = new ListNode(0);
+        head.next = null;
+        tail.next = null;
     }
     
     /** Insert an element into the circular queue. Return true if the operation is successful. */
     public boolean enQueue(int value) {
-        if (list.size() == size) return false;
-        list.add(value);
+        if (cnt >= size) return false;
+        ListNode node = new ListNode(value);
+        if (head.next == null) { //first node
+            head.next = node;
+            tail.next = node;
+        } else{
+            tail.next.next = node;
+            node.next = head.next;
+            tail.next = node;
+        }
+        cnt++;
         return true;
     }
     
     /** Delete an element from the circular queue. Return true if the operation is successful. */
     public boolean deQueue() {
-        if (list.size()==0) return false;
-        list.remove(0);
+        if (head.next == null) return false;
+        if (head.next == tail.next){ //only 1 element
+            head.next = null;
+            tail.next = null;
+        } else{
+            head.next = head.next.next;
+            tail.next.next = head.next;
+        }
+        cnt--;
         return true;
     }
     
     /** Get the front item from the queue. */
     public int Front() {
-        if (list.size()==0) return -1;
-        return list.get(0);
+        if (head.next == null) return -1;
+        return head.next.val;
     }
     
     /** Get the last item from the queue. */
     public int Rear() {
-        if (list.size()==0) return -1;
-        return list.get(list.size()-1);
+        if (tail.next == null) return -1;
+        return tail.next.val;
     }
     
     /** Checks whether the circular queue is empty or not. */
     public boolean isEmpty() {
-        return list.size() == 0;
+        return head.next == null;
     }
     
     /** Checks whether the circular queue is full or not. */
     public boolean isFull() {
-        return list.size() == size;
+        return cnt == size;
     }
 }
 
