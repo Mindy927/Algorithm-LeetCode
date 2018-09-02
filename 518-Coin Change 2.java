@@ -39,8 +39,12 @@ class Solution {
         int[] dp = new int[amount+1]; //dp[i]: number of ways to get i
         dp[0] = 1;
          
-        //if i is outer loop, 5=1+2+1, 5=2+1+2 will both be counted, duplication
-        //use coins as outer loop to prevent duplication, only 1+2+2 will be counted
+        /*
+        if i is outer loop, 5=1+2+1, 5=2+1+2 will both be counted, duplication
+        use coins as outer loop to prevent duplication, only 1+2+2 will be counted
+        Two dimensional: dp[i][j] = dp[i-1][j] + (j >= coins[i-1] ? dp[i][j-coins[i-1]] : 0);
+                        change to 1-D, dp[i][j], dp[i-1][j] can be combined together
+        */
         for (int c:coins){ 
             for (int i=1; i<amount+1; i++){
                    if (i-c >= 0) dp[i] += dp[i-c]; //c:coin chosen in last step
@@ -50,3 +54,33 @@ class Solution {
         return dp[amount];
     }
 }
+
+
+//increasing i then the previous partial result dp[i - coin] is the result that has considered coin already
+//decreasing i then the previous partial result dp[i - coin] is the result that has not considered coin yet
+
+increasing i then the previous partial result dp[i - coin] is the result that has considered coin already
+decreasing i then the previous partial result dp[i - coin] is the result that has not considered coin yet
+/** 
+ * @return number of ways to make sum s using repeated coins
+ */
+public static int coinrep(int[] coins, int s) {
+    int[] dp = new int[s + 1]; 
+    dp[0] = 1;          
+    for (int coin : coins)      
+        for (int i = coin; i <= s; i++)         
+            dp[i] += dp[i - coin];                                  
+    return dp[s];
+}                                       
+                                            
+/**
+ * @return number of ways to make sum s using non-repeated coins
+ */
+public static int coinnonrep(int[] coins, int s) {
+    int[] dp = new int[s + 1];
+    dp[0] = 1;  
+    for (int coin : coins)
+        for (int i = s; i >= coin; i--)
+            dp[i] += dp[i - coin];              
+    return dp[s];                                                   
+} 
