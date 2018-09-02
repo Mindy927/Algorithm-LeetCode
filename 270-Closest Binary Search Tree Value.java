@@ -44,3 +44,19 @@ class Solution {
         if (root.val < target) helper(root.right, target);
     }
 }
+
+//archieve
+class Solution {
+    public int closestValue(TreeNode root, double target) {
+        if (root.left == null && root.right == null || root.val == target) return root.val;
+        
+        if (root.val > target){
+            int left = root.left!=null? closestValue(root.left, target):root.val;
+            return Math.abs(root.val-target)<Math.abs(target - left)? root.val:left;
+        } else{
+            int right = root.right!=null? closestValue(root.right, target):root.val;
+            return Math.abs(root.val-target)< Math.abs(target - right)? root.val:right;
+        }
+        
+    }
+}
