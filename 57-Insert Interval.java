@@ -50,3 +50,36 @@ class Solution {
         return res;
     }
 }
+
+//in-place
+class Solution {
+    public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        //newInterval before all intervals
+        if (intervals.size()==0 || intervals.get(0).start > newInterval.end){
+            intervals.add(0, newInterval);
+            return intervals;
+        }
+        
+        int index = 0;
+        while (index < intervals.size() && intervals.get(index).end < newInterval.start) index++;
+        
+        //newInterval after all intervals
+        if (index == intervals.size()){
+            intervals.add(newInterval);
+            return intervals;
+        }
+        
+        //merge all overlapping intervals, update start/end point and remove overlapped interval
+        int start = Math.min(newInterval.start, intervals.get(index).start);
+        int end = newInterval.end;
+        while (index < intervals.size() && intervals.get(index).start <= end) { 
+            start = Math.min(start, intervals.get(index).start);
+            end = Math.max(end, intervals.get(index).end);
+            intervals.remove(index);
+        }
+        
+        intervals.add(index, new Interval(start, end));
+        
+        return intervals;
+    }
+}
