@@ -18,7 +18,21 @@ return its minimum depth = 2.
 
 Author: Mindy927*/
 
+//add to result only when reach a leaf
+class Solution {
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        if (root.left == null && root.right == null) return 1;
+        int left = root.left != null? minDepth(root.left):Integer.MAX_VALUE;
+        int right = root.right != null? minDepth(root.right):Integer.MAX_VALUE;
+        return Math.min(left, right) + 1;
+    }
+}
 
+
+
+
+//archieve
 class Solution {
     int min = Integer.MAX_VALUE;
     public int minDepth(TreeNode root) {
