@@ -32,7 +32,10 @@ class Node {
 
 
 class Solution {
-    //corner case: insertVal is largest/smallest, consider case 3->5->1 need to insert between 5 and 1 but not satisfying prev.val<=insertVal <= cur.val
+    /*
+    insert when prev.val <= insertVal <= cur.val
+    OR prev.val = max && cur.val = min
+    */
     public Node insert(Node head, int insertVal) {
         if (head == null) {
             head = new Node(insertVal);
