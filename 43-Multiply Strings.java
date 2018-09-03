@@ -23,6 +23,8 @@ class Solution {
         if (num1.length()==0 || num2.length()==0) return "";
         int[] res = new int[num1.length() + num2.length()];//m+n
         int sum = 0;
+
+        //From least significant digit to most significant digit
         for (int i = num1.length()-1; i>=0; i--){
             for (int j = num2.length()-1; j>=0; j--){
                 int pos0 = i+j;
@@ -34,7 +36,14 @@ class Solution {
         }
         
         StringBuilder sb = new StringBuilder();
-        for(int p : res) if(!(sb.length() == 0 && p == 0)) sb.append(p); //deal with case 9133*0 = 0 not 0000,dont append until its non-zero
+        //deal with case 9133*0 = 0 not 0000,dont append until its non-zero
+        boolean hasFirst = false;
+        for (int i:res) {
+            if (i==0 && !hasFirst) continue;
+            sb.append(i);
+            hasFirst = true;
+        }
+
         return sb.length() == 0 ? "0" : sb.toString();
         
     }
