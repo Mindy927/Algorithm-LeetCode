@@ -28,7 +28,8 @@ Author:Mindy927*/
 class Solution {
     public int findPeakElement(int[] nums) {
         int left = 0, right = nums.length-1;
-        while (left + 1 < right){
+        //at least three numbers when executing while loop: left, left+1,right => mid will not be 0 or nums.length-1
+        while (left + 1 < right){ 
             int mid = left + (right - left)/2;
             if (nums[mid] > nums[mid-1] && nums[mid] > nums[mid+1]) return mid; //return mid when its peak
             else if (nums[mid] < nums[mid+1]) left = mid; //when nums[mid] < mid[mid+1], there is number < mid+1 on the left, move left to mid
