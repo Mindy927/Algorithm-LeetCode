@@ -17,7 +17,7 @@ return 13.
 Author: Mindy927*/
 
 
-//Method 1: heap
+//Method 1: heap O(nlgk)
 class Solution {
     public int kthSmallest(int[][] matrix, int k) {
         int m = matrix.length, n = matrix[0].length;
