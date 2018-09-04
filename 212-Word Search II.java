@@ -19,53 +19,57 @@ Author: Mindy927 */
 
 class Solution {
     class TrieNode{
+        char val;
+        TrieNode[] children = new TrieNode[26];
         boolean isEnd;
-        TrieNode[] children = new TrieNode[26];      
         public TrieNode(){}
-        
+        public TrieNode(char val){
+            this.val = val;
+        }
     }
     
-    TrieNode root;
+    TrieNode head;
     public List<String> findWords(char[][] board, String[] words) {
-        root = new TrieNode();
-        Set<String> result = new HashSet<>();
-        boolean[][] visited = new boolean[board.length][board[0].length];
+        head = new TrieNode();
+        Set<String> res = new HashSet<>();
+        int m = board.length, n = board[0].length;
+        //inisialize a singel visited array since dfs search will clear path, no need inisialize visited array for all possible start
+        boolean[][] visited = new boolean[m][n]; 
         
         for (String word:words) addToDict(word);
         
-        for(int i=0; i<board.length; i++){
-            for (int j=0; j<board[0].length; j++){
-                search(board,visited,i,j, "",root, result);
+        for(int i=0; i<m; i++){
+            for (int j=0; j<n; j++){
+                search(board, visited, i,j, head,"", res);
             }
         }
-
-        return new ArrayList<>(result);
+        return new ArrayList<>(res);
     }
-    
     
     public void addToDict(String word){
-        TrieNode cur = root;
-        for(int i=0; i<word.length(); i++){
+        TrieNode cur = head;
+        for (int i=0; i<word.length(); i++){
             char c = word.charAt(i);
-            if (cur.children[c - 'a'] == null) cur.children[c - 'a'] = new TrieNode();
+            if (cur.children[c - 'a'] == null) cur.children[c - 'a'] = new TrieNode(c);
             cur = cur.children[c - 'a'];
         }
-        cur.isEnd =true;
+        cur.isEnd = true;
     }
     
-    
-    public void search(char[][] board, boolean[][] visited,int i, int j,String str,TrieNode cur,Set<String> result){
+    static final int[] DIRS = new int[]{1, 0, -1, 0, 1};
+    //add to res whhen we found a word ends at board[i][j]
+    public void search(char[][] board, boolean[][] visited, int i, int j, TrieNode cur,String temp, Set<String> res){
+        if (cur.isEnd) res.add(temp); //add to res first when reaching end of word before checking next char board[i][j]
         
-        if (cur.isEnd) result.add(str);
-        
-        if( i<0 || j<0 || i>=board.length || j >= board[0].length) return;
-        if( visited[i][j] || cur.children[board[i][j]-'a']== null) return;
+        if (i<0 || j< 0 || i>= board.length || j >= board[0].length ) return;
+        if (visited[i][j] || cur.children[board[i][j] - 'a']==null) return;
         
         visited[i][j] = true;
-        search(board, visited, i+1, j, str+board[i][j], cur.children[board[i][j]- 'a'], result);
-        search(board, visited, i-1, j, str+board[i][j], cur.children[board[i][j]- 'a'], result);
-        search(board, visited, i, j+1, str+board[i][j], cur.children[board[i][j]- 'a'], result);
-        search(board, visited, i, j-1, str+board[i][j], cur.children[board[i][j]- 'a'], result);
+        for (int d=0; d<4; d++){
+            int x = i + DIRS[d];
+            int y = j + DIRS[d+1];
+            search(board, visited, x, y, cur.children[board[i][j]-'a'], temp + board[i][j], res);
+        }
         visited[i][j] = false;
         
     }
