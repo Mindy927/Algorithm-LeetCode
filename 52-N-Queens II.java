@@ -24,34 +24,30 @@ Explanation: There are two distinct solutions to the 4-queens puzzle as shown be
 
 Author: Mindy927 */
 
-
 class Solution {
     public int totalNQueens(int n) {
-        boolean[] col = new boolean[n];
-        boolean[] diag1 = new boolean[2*n-1];  //mark diagonal[k] as visited; k = j - i + n-1
-        boolean[] diag2 = new boolean[2*n-1]; // mark diagonal[k] as visited; k = i + j
-;
-        return helper(n, 0, col, diag1, diag2);
+        boolean[] cols = new boolean[n];
+        boolean[] diag1 = new boolean[2*n-1];
+        boolean[] diag2 = new boolean[2*n-1];
+        
+        return dfs(n, 0, cols, diag1, diag2);
     }
     
-    public int helper(int n, int row, boolean[] col, boolean[] diag1, boolean[] diag2){
-        if (row == n) { //pass row+1 to next round, Add result at next round
-            return 1;
+    //number of ways when start from row i
+    public int dfs(int n, int i, boolean[] cols, boolean[] diag1, boolean[] diag2){
+        if (i == n) return 1; //pass row+1 to next round, Add result at next round
+        
+        int cnt = 0;
+        for (int j=0; j<n; j++){//For each row, for loop choose all possible cols based on visited boolean[]
+            if (cols[j] || diag1[i+j] || diag2[i-j + n-1]) continue;
+            cols[j] = true;
+            diag1[i+j] = true;
+            diag2[i-j+n-1] = true;
+            cnt += dfs(n, i+1, cols, diag1, diag2);
+            cols[j] = false;
+            diag1[i+j] = false;
+            diag2[i-j+n-1] = false;
         }
-    
-        int count =0;
-        //For each row, for loop choose all possible cols based on visited boolean[]
-      for (int j=0; j<n; j++){
-            if (!col[j] && !diag1[j-row+n-1] && !diag2[row+j]) {
-                col[j] = true;
-                diag1[j-row+n-1] = true;
-                diag2[row+j] = true;
-                count += helper(n, row+1, col, diag1, diag2);
-                col[j] = false;
-                diag1[j-row+n-1] = false;
-                diag2[row+j] = false;
-            }
-        }
-        return count;
+        return cnt;
     }
 }
