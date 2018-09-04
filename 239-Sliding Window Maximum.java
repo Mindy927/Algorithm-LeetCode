@@ -59,21 +59,21 @@ In this way, deque with number DECREASING
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
         if (nums.length == 0) return new int[0];
-        Deque<Integer> q = new ArrayDeque<>(); //deque of indices
-        int n = nums.length;
-        int[] res = new int[n-k+1];
-        int index = 0;
+        Deque<Integer> q = new LinkedList<>(); //deque of indices
         
-        for (int i=0; i<n; i++){ // [i-k+1, i]
-            while (!q.isEmpty() && q.peekFirst() < i-k+1) q.pollFirst();
-            
+        //inisialize q with first k elements
+        for (int i=0; i<k; i++){
             while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) q.pollLast();
-            
-            q.offerLast(i);
-            
-            if (i>=k-1){
-                res[index++] = nums[q.peekFirst()];
-            }
+            q.offer(i);
+        }
+        
+        int n = nums.length;
+        int[] res = new int[n - k + 1];
+        for (int i=0; i<res.length; i++){
+            if(q.peekFirst() < i) q.pollFirst(); //remove invalid answer
+            res[i] = nums[q.peekFirst()];
+            while (!q.isEmpty() && i+k<n && nums[q.peekLast()] < nums[i+k]) q.pollLast(); //remove all smaller candidate 
+            q.offer(i+k);
         }
         
         return res;
