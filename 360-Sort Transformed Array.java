@@ -18,28 +18,43 @@ Author: Mindy927*/
 
 
 class Solution {
+    /*
+    two pointers
+    --if a > 0, larger val at two boundaries, fill result array from end
+    --else, smaller val at two boundaries, fill result array from beginning
+    */
     public int[] sortTransformedArray(int[] nums, int a, int b, int c) {
         int n = nums.length;
         int[] res = new int[n];
-        int i = 0, j = nums.length-1;
-
-        if (a <= 0){
-            int index = 0;
-            while ( i<= j ){
-                res[index++] = cal(nums[i], a, b, c) < cal(nums[j], a, b, c)? cal(nums[i++], a, b, c):cal(nums[j--], a, b, c);
-            }
-
-        }else{
-            int index = n-1; //fill res array from back since quad valud of boundary is larger
-            while (i <= j) {
-                res[index--] = cal(nums[i], a, b, c) > cal(nums[j], a, b, c)? cal(nums[i++], a, b, c):cal(nums[j--], a, b, c);    
+        int left = 0, right = n-1;
+        int index = a>0 ? n-1:0; // if a>0, larger value at two boundaries
+        
+        while (left <= right){
+            int leftVal = cal(nums[left], a, b, c);
+            int rightVal = cal(nums[right], a, b, c);
+            if (a > 0){  
+                if (leftVal > rightVal) { //fill with larger val
+                    res[index--] = leftVal;
+                    left++;
+                }else {
+                    res[index--] = rightVal;
+                    right--;
+                }
+            }else {
+                if (leftVal < rightVal) {
+                    res[index++] = leftVal;
+                    left++;
+                }else {
+                    res[index++] = rightVal;
+                    right--;
+                }
             }
         }
         
         return res;
     }
     
-    public int cal(int num, int a, int b, int c){
-        return a * num * num + b * num + c;
+    public int cal(int x, int a, int b, int c){
+        return a*x*x + b*x + c;
     }
-    
+}
