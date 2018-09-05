@@ -36,7 +36,7 @@ class Solution {
 /*
 Method 2: Two pointers O(nlgn)
 (1) if x is larger than all tails, append it, increase the size by 1
-(2) if tails[i-1] < x <= tails[i], update tails[i]
+(2) if tails[i-1] < x <= tails[i], update tails[i], since we can have LIS of length i with smaller tail x
 */
 
 class Solution {
