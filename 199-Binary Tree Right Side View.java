@@ -26,6 +26,31 @@ Author: Mindy927*/
  *     TreeNode(int x) { val = x; }
  * }
  */
+
+//Method 1:dfs, preorder
+class Solution {
+    //preorder: root, right, left
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        dfs(root, res, 0);
+        return res;
+    }
+    
+    public void dfs(TreeNode root, List<Integer> res, int depth){
+        if (root == null) return;
+        
+        if (depth == res.size()){ //add to result for first(right-most) node in each depth
+            res.add(root.val);
+        }
+        
+        dfs(root.right, res, depth+1);
+        dfs(root.left, res, depth+1);
+    }
+}
+
+
+
+//Method 2:bfs
 class Solution {//bfs
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> result = new ArrayList<>();
@@ -46,3 +71,4 @@ class Solution {//bfs
         return result;    
     }
 }
+
