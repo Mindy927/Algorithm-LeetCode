@@ -13,6 +13,7 @@ A linked list can be reversed either iteratively or recursively. Could you imple
 Author: Mindy927*/
 
 
+//iteration
 class Solution {
     public ListNode reverseList(ListNode head) {
         ListNode prev = null; //NOT dummy node !!
@@ -26,5 +27,21 @@ class Solution {
         }
         
         return prev;
+    }
+}
+
+
+//recursion
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        
+        //reverse list from head.next, move current head to the end
+        ListNode newTail = head.next;
+        ListNode newHead = reverseList(newTail);
+        newTail.next = head;
+        head.next = null;
+        
+        return newHead;
     }
 }
