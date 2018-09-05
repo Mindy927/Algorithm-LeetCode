@@ -12,19 +12,22 @@ If you have figured out the O(n) solution, try coding another solution of which 
 Author: Mindy927*/
 
 //Method 1: O(n), two pointers
+//sliding window : right pointer iterate array , increase left pointer when 1 possible solution found
 class Solution {
     public int minSubArrayLen(int s, int[] nums) {
-        int i=0;
-        int sum = 0;
-        int size = Integer.MAX_VALUE;
+        int i=0, sum = 0;
+        int res = Integer.MAX_VALUE;
+        
         for (int j=0; j<nums.length; j++){
             sum += nums[j];
-            if (sum < s) continue;
-            while ( sum >= s) sum -= nums[i++]; // we need to keep moving i until its less than s, then we can search for next possible solution!
-            size = Math.min(size, j-i+2);
+            while (sum >=s){ 
+                res = Math.min(res, j-i+1); //compare with previous result when sum>=s
+                sum -= nums[i]; //move left pointer
+                i++;
+            }
         }
         
-        return size == Integer.MAX_VALUE? 0:size;
+        return res == Integer.MAX_VALUE? 0:res;
     }
 }
 
