@@ -24,41 +24,32 @@ After running your function, the 2D grid should be:
  Author:Mindy927*/
 
 
-
 class Solution {
     public void wallsAndGates(int[][] rooms) {
-        if (rooms.length==0 || rooms[0].length==0) return;
-        int m = rooms.length, n = rooms[0].length;
-
-        Queue<int[]> q = new LinkedList<>();  //queue of [i,j]
-        
-        for (int i=0; i<m; i++){
-            for (int j=0; j<n; j++){
+        Queue<int[]> q = new LinkedList<>();
+        int[] DIRS = new int[]{1,0,-1,0,1};
+            
+        for (int i=0; i<rooms.length; i++){
+            for (int j=0; j<rooms[0].length; j++){
                 if (rooms[i][j]==0) q.offer(new int[]{i,j});
             }
         }
-        
+    
         int dist = 0;
-        int[] DIRS = new int[]{-1,0,1,0,-1};
         while (!q.isEmpty()){
             dist++;
             int size = q.size();
-            for (int i=0; i<size; i++){
-                int[] cur = q.poll();
-                for (int d=0; d<4; d++){
-                    int x = cur[0] + DIRS[d];
-                    int y = cur[1] + DIRS[d+1];
-                    if (inBound(rooms, x, y) && rooms[x][y]==Integer.MAX_VALUE){
+            for (int s=0; s<size; s++){
+                int[] pos = q.poll();
+                for(int d=0; d<4; d++){
+                    int x = pos[0] + DIRS[d];
+                    int y = pos[1] + DIRS[d+1];
+                    if (x>=0 && x<rooms.length && y>=0 && y<rooms[0].length && rooms[x][y] == Integer.MAX_VALUE){
+                        rooms[x][y] = dist; //update distance before adding to queue
                         q.offer(new int[]{x,y});
-                        rooms[x][y] = dist;
                     }
                 }
             }
         }
-    }
-    
-    
-    public boolean inBound(int[][] rooms, int x, int y){
-        return (x>=0 && x<rooms.length && y>=0 && y<rooms[0].length);
     }
 }
