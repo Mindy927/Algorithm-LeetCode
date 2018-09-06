@@ -76,6 +76,8 @@ class Solution {
         dfs(robot, 0, 0, 0, visited);
     }
     
+
+    //curDir used for indicating next pos when we call robot.move()
     public void dfs(Robot robot, int i, int j, int curDir, Set<String> visited){
         if (visited.contains(i+ "-" + j)) return;
         
