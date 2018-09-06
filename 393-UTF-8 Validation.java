@@ -33,8 +33,8 @@ class Solution {
           
            //10XXXXXX
             if ( (data[i] >> 6) == 2 ) {  
-                if (i==0 || required == 0) return false;
-                else required --;
+                if (required > 0) required--;
+                else return false;  
             } 
            //110XXXXX, 1110XXX, 11110XXX
            else{ 
