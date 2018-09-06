@@ -19,51 +19,37 @@ Author: Mindy927*/
 //binary search, helper function to find left boundary and right boundary when nums[mid] = target
 class Solution {
     public int[] searchRange(int[] nums, int target) {
+        if (nums.length == 0) return new int[]{-1,-1};
         int left = 0, right = nums.length-1;
-        int[] result = new int[]{-1,-1};
-        if (nums.length == 0) return result;
-        
-        while (left + 1 < right){
+        int i = -1, j = -1;
+        while (left+1 < right){ //just out of loop when left and right are adjacent, need to verify left/right
             int mid = left + (right - left)/2;
-            if (nums[mid] == target){
-                result[0] = findLeft(nums, left, mid, target);
-                result[1] = findRight(nums, mid, right, target);
-                return result;
-            } else if (nums[mid] < target) left = mid;
-            else right = mid;
+            if (nums[mid] < target) left = mid;
+            else if (nums[mid] > target) right = mid;
+            else {
+                i = findBoundary(nums, left, mid, target,true); //find left boundary
+                j = findBoundary(nums, mid, right, target, false); //find right boundary
+                return new int[]{i,j};
+            }
         }
         
-        if (nums[left] == target && nums[right] != target) {
-            result[0] = left; result[1] = left;
-        }
-        if (nums[right] == target && nums[left] != target){
-            result[0] = right; result[1] = right;
-        }
-        
-        if (nums[left] == target && nums[right] == target){
-            result[0] = left; result[1] = right;
-        }
-        return result;
+        i = nums[left] == target? left:nums[right] == target? right:i;
+        j = nums[right] == target? right:nums[left] == target? left:j;
+        return new int[]{i,j};
     }
     
-    public int findLeft(int[] nums, int left, int right, int target){ //find first nums[left] == target
+    //find left/right boundary
+    public int findBoundary(int[] nums, int left, int right, int target, boolean isLeft){
         while (left+1 < right){
             int mid = left + (right - left)/2;
             if (nums[mid] < target) left = mid;
-            else right = mid;
-        }
-        
-        return nums[left] == target? left:right;
+            else if (nums[mid] > target) right = mid;
+            else {
+                if (isLeft) right = mid;
+                else left = mid;
+            }
+        }         
+        if (isLeft) return nums[left] == target? left:right;
+        else return nums[right] == target? right:left;
     }
-    
-     public int findRight(int[] nums, int left, int right,int target){ //find first nums[right] == target
-        while (left+1 < right){
-            int mid = left + (right - left)/2;
-            if (nums[mid] > target) right = mid;
-            else left = mid;
-        }
-        
-        return nums[right] == target? right:left;
-    }
-    
 }
