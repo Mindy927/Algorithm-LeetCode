@@ -73,7 +73,7 @@ public class ZigzagIterator {
 
     public int next() {
         Iterator cur = q.poll();
-        int result = (int) cur.next();
+        int result = (int) cur.next(); //convert Integer to int
         if (cur.hasNext()) q.offer(cur);
         return result;
     }
