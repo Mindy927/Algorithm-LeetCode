@@ -30,21 +30,26 @@ Functions could be called recursively, and will always end.
 
 
 Author:Mindy927 */
+
 class Solution {
     public int[] exclusiveTime(int n, List<String> logs) {
-        Stack<Integer> stack = new Stack<>(); //stack of func #
+        Stack<Integer> stack = new Stack<>(); //stack of func_id
         int[] res = new int[n];
-        int prev = -1;
         
-        for(String str:logs){
-            String[] log = str.split(":");
-            if (log[1].equals("start")) {
-                if (!stack.isEmpty()) res[stack.peek()] += Integer.parseInt(log[2]) - prev;
-                stack.push(Integer.parseInt(log[0]));
-                prev = Integer.parseInt(log[2]);
-            } else{
-                res[stack.pop()] += Integer.parseInt(log[2]) - prev + 1;  
-                prev = Integer.parseInt(log[2]) + 1;//+1 for end log, prev stores start of next func
+        int prev = -1; //start timestamp for each func, including restart
+        for (int i=0; i<logs.size(); i++){
+            String[] strs = logs.get(i).split(":");
+            int id = Integer.parseInt(strs[0]);
+            int ts = Integer.parseInt(strs[2]);
+            if (strs[1].equals("start")){ //update for prev func
+                if (!stack.isEmpty()){
+                    res[stack.peek()] += ts - prev;
+                }
+                stack.push(id);
+                prev = ts;
+            }else { //end current func
+                res[stack.pop()] += ts - prev + 1;
+                prev = ts+1; //+1 for end log, prev stores start of next func
             }
         }
         
