@@ -29,14 +29,15 @@ All of the nodes' values will be unique.
 p and q are different and both values will exist in the binary tree.
 
 Author: Mindy927 */
+
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-          if (root == null || root==p || root==q) return root;
-          TreeNode left = lowestCommonAncestor(root.left, p, q);
-          TreeNode right = lowestCommonAncestor(root.right, p, q);
-          if ( (root == p && left == q) || (root==q && right == p) || (left==p && right==q) ) return root; 
+        //since we iterate tree from top to down, if we found p or q at first time, it should be the lowest common ancestor
+        if (root == null || root == p || root == q) return root;
         
-          return left==null? right:right==null? left:root;   
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        
+        return left == null? right: right == null? left:root;
     }
-    
 }
