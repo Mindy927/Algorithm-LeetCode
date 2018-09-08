@@ -46,6 +46,7 @@ Output: false
 
 Author:Mindy927*/
 
+//corner case ***ho matches ho, be aware when inisialize
 class Solution {
     public boolean isMatch(String s, String p) {
         int m = s.length(), n = p.length();
