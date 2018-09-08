@@ -10,8 +10,8 @@ Empty cells are indicated by the character '.'.
 
 Author: Mindy927 */
 
-
-
+//backtracking
+//each time, we use two for loops to find first '.' and try to fill it.
 class Solution {
     public void solveSudoku(char[][] board) {
         helper(board);
