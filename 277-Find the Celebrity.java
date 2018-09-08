@@ -12,20 +12,24 @@ Author: Mindy927 */
 /* The knows API is defined in the parent class Relation.
       boolean knows(int a, int b); */
 
-
+/*
+Assume the candidate found in first pass is k
+for people 0 to k-1, either current cand or previous can dont know then
+for people k+1 to n-1, k dont know them (otherwise they would be swapped as candidate)
+Hence, k is the only possible candidate for celebrity
+*/
 public class Solution extends Relation {
     public int findCelebrity(int n) {
-        int candidate = 0;
-        for (int i=1; i<n; i++){
-            if (knows(candidate, i))  candidate = i; 
-            /*prevCandidate is fake because he knows i, i becomes new candidate, anyone before i wont be candidate since previous candidate doesnt know then(celebrity is known to everyone) */
-        }
-        
+        int cand = 0;
         for (int i=0; i<n; i++){
-            if (i==candidate) continue;
-            if (knows(candidate,i) || !knows(i,candidate)) return -1;
+            if (i == cand) continue;
+            if (knows(cand, i)) cand = i;
         }
         
-        return candidate;
+        for (int i=0; i<n ; i++){
+            if (i == cand) continue;
+            if (!knows(i,cand) || knows(cand,i)) return -1;
+        }
+        return cand;
     }
 }
