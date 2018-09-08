@@ -11,6 +11,8 @@ You must do this in-place without making a copy of the array.
 Minimize the total number of operations.
 */
 
+
+//version 1
 class Solution {
     public void moveZeroes(int[] nums) {
        int j = 0; //pos of index of all non-zeros+1, once found non-zero, swap with nums[j], and non-zero array len+1(j++)
@@ -21,6 +23,21 @@ class Solution {
                 nums[j] = temp;
                 j++;
             }
+        }
+    }
+}
+
+//version 2
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int index = 0;
+        for (int i=0; i<nums.length; i++){
+            if (nums[i]!=0) {
+                nums[index++] = nums[i];
+            }
+        }
+        for (int i=index; i<nums.length; i++){
+            nums[i] = 0;
         }
     }
 }
