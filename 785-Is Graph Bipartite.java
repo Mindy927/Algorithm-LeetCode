@@ -30,6 +30,8 @@ Authour: Mindy927 */
 
 
 class Solution {
+
+    //dont return true when graph[0].length == 0, the first node may node connect to any other node
     public boolean isBipartite(int[][] graph) {
         int n = graph.length;
         int[] colors = new int[n];
