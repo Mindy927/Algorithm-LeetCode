@@ -33,15 +33,7 @@ class Solution {
         slow.next = null;
         
         //Insert secondHalf to firstHalf
-        ListNode cur = head;
-        while (cur!=null && secondHalf!=null){
-            ListNode temp1 = cur.next;
-            ListNode temp2 = secondHalf.next;  
-            cur.next = secondHalf; 
-            secondHalf.next = temp1;
-            cur = temp1;
-            secondHalf = temp2;
-        }
+        merge(head, secondHalf);
     }
     
     public ListNode reverse(ListNode head){
@@ -56,4 +48,15 @@ class Solution {
         }
         return prev;
     }
+
+    public void merge(ListNode head1, ListNode head2){
+        while (head2!=null){
+            ListNode next1 = head1.next;
+            ListNode next2 = head2.next;
+            head1.next = head2;
+            head2.next = next1;
+            head1 = next1;
+            head2 = next2;
+        }
+    
 }
