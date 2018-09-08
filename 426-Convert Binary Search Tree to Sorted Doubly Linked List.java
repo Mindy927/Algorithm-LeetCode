@@ -37,7 +37,9 @@ class Node {
     }
 };
 */
+
 class Solution {
+    //use dummy node since root will change, dummy.next point to original root
     Node prev = null; //current tail
     public Node treeToDoublyList(Node root) {
         if (root == null) return root;
