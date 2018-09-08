@@ -35,7 +35,7 @@ Author: Mindy927 */
  */
 public class Solution {
     //map record the nodes which has been cloned
-    Map<Integer, UndirectedGraphNode> map = new HashMap<>();
+    Map<Integer, UndirectedGraphNode> map = new HashMap<>(); //old node:new node
     public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
         return clone(node);
     }
@@ -49,7 +49,7 @@ public class Solution {
         
         //clone node
         UndirectedGraphNode copy = new UndirectedGraphNode(node.label);
-        map.put(copy.label, copy); 
+        map.put(copy.label, copy);  //put copy to map first, otherwise self-cycle case will cause stack overflow
         //clone neighbors
         for (UndirectedGraphNode nei:node.neighbors){
             copy.neighbors.add(clone(nei));
