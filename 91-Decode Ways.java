@@ -20,7 +20,7 @@ Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
 
 Author: Mindy927 */
 
-
+//version 1
 class Solution {
     //three case: dp[i] = dp[i-1], dp[i-2], dp[i-1]+dp[i-2]
     //corner case: 1) start with 0  2) cur == 0, prev != 1 or 2
@@ -43,5 +43,33 @@ class Solution {
         }
         
         return dp[n-1];
+    }
+}
+
+//version 2
+class Solution {
+    public int numDecodings(String s) {
+        int[] dp = new int[s.length()+1]; //dp[i]: # of ways to decode for s.substring(0,i)
+        dp[0] = 1;
+        
+        for (int i=1; i<s.length()+1; i++){
+            char prev = i>1? s.charAt(i-2):' ';
+            char cur = s.charAt(i-1);
+            if (cur == '0'){
+                if (prev == '1' || prev == '2') {
+                    dp[i] = dp[i-2];
+                } else return 0;
+            }
+            
+            else if (prev == '1' && cur >= '1' && cur <= '9'){
+                dp[i] = dp[i-1] + dp[i-2];
+            }
+            else if (prev == '2' && cur >= '1' && cur <= '6'){
+                dp[i] = dp[i-1] + dp[i-2];
+            }
+            else dp[i] = dp[i-1];
+        }
+        
+        return dp[s.length()];
     }
 }
