@@ -17,6 +17,7 @@ class Solution {
         helper(board);
     }
     
+    //helper func found first '.' and fill it
     public boolean helper(char[][] board){
         for (int row=0; row<9; row++){
            for (int col=0; col<9; col++){
@@ -28,7 +29,7 @@ class Solution {
                         board[row][col] = '.';
                     }
                 }
-                return false;
+                return false; //return false if we tried out all possible fill(1-9) for current cell
             }
         }
 
