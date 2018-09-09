@@ -39,8 +39,10 @@ class Solution {
         if (left > right) return Integer.MIN_VALUE;
         if (left == right) return nums[left];
         int mid = (left + right) / 2;
-        int L = maxSubArray(nums, left, mid-1);
-        int R = maxSubArray(nums, mid+1, right);
+        int L = maxSubArray(nums, left, mid-1);  //max sum for subArray[left, mid-1]
+        int R = maxSubArray(nums, mid+1, right); //max sum for subArray[mid+1, right]
+
+        //get max sum with left boundary in [left, mid-1], right boundary in [mid+1, right]
         int leftSum = 0;
         int tmp = 0;
         for (int i=mid-1; i>=left; i--) {
