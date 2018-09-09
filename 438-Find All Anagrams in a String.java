@@ -34,33 +34,29 @@ Author: Mindy927 */
 
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
-        List<Integer> result = new ArrayList<>();
-        if ( s.length() < p.length()) return result;
+        List<Integer> res = new ArrayList<>();
+        int n = p.length(); //number of chars that s matches p
+        if (s.length() < p.length()) return res;
+        
         int[] cnt = new int[26];
-        int match = 0; //number of chars that s matches p
-        
-        for (char c:p.toCharArray()){
-            cnt[ c - 'a' ]++;
-        }
-        
-        //first possible substring
+        int match = 0;
         for (int i=0; i<p.length(); i++){
-            char c = s.charAt(i);
-            cnt[c - 'a']--;
-            if (cnt [ c - 'a'] >= 0) match++;
+            cnt[p.charAt(i) - 'a']++;
         }
         
-        if (match == p.length()) result.add(0);
-        //sliding window
-        for (int i=1; i<=s.length()-p.length(); i++){
-            char prev = s.charAt(i-1);
-            char cur = s.charAt(i+p.length()-1);
-            cnt[prev - 'a']++;
-            if (cnt[prev - 'a'] > 0) match--; //need to match 1 more char at pos i-1
+        for (int i=0; i<s.length(); i++){
+            char cur = s.charAt(i);
             cnt[cur - 'a']--;
             if (cnt[cur - 'a'] >=0) match++;
-            if (match == p.length()) result.add(i);
+            
+            if (i >= n) { //remove chars before sliding window
+                char prev = s.charAt(i-n);
+                cnt[prev - 'a']++;
+                if (cnt[prev-'a'] > 0) match--; //need to match 1 more char
+            } 
+            
+            if (match == n) res.add(i-n+1);
         }
-        return result;
+        return res;
     }
 }
