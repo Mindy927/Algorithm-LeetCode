@@ -50,6 +50,7 @@ class Solution {
         TrieNode cur = head;
         for (int i=0; i<word.length(); i++){
             char c = word.charAt(i);
+            //verify word.substring(i) not word.substring(i+1), since cur is at parent, (consider case for head)
             if (isPalindrome(word.substring(i)) && cur.index!= idx && cur.index!=-1) //abss & ba
                 result.add(Arrays.asList(idx, cur.index)); 
             if (cur.children[ c - 'a'] == null) return;
