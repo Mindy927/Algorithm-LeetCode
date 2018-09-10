@@ -26,7 +26,7 @@ class Solution {
         }
        
         int prev = Integer.parseInt(strs[0]) * 60 + Integer.parseInt(strs[1]);
-        for (int i=1; i<=1440; i++){ //increase 1 minute each time
+        for (int i=1; i<=1440; i++){ //increase 1 minute each time, =1440 for corner case "00:00", cound be itself
             int cur = (prev + i) % 1440;
             String h = cur/60 < 10? "0"+ cur/60 : "" + cur/60; //9:1 invalid --> 09:01
             String m = cur%60 < 10? "0"+ cur%60 : "" + cur%60;          
