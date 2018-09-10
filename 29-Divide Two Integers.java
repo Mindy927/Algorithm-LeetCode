@@ -30,7 +30,7 @@ class Solution {
         if ( (dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0)) sign=-1;
         
         
-        long lres= ldivide( Math.abs((long)dividend), Math.abs((long)divisor));
+        long lres= ldivide( Math.abs((long)dividend), Math.abs((long)divisor)); //convert to long before take abs, otherwise cause overflow
         int res = 0;
         if (lres > Integer.MAX_VALUE){
             res = sign==1? Integer.MAX_VALUE:Integer.MIN_VALUE;
@@ -43,10 +43,11 @@ class Solution {
     
     public long ldivide(long ldividend, long ldivisor){
         if ( ldivisor > ldividend ) return 0;
+        //mul is the max bit of quotient in this round
         long mul = 1;
         long sum = ldivisor;
         
-        while (sum + sum < ldividend){
+        while (sum + sum < ldividend){ //max sure next sum is still within range before sum
             mul += mul;
             sum += sum;
         }
