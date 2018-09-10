@@ -21,7 +21,7 @@ Author: Mindy927*/
 
 /*
 Key Idea:
-Since rectangle area grows when height of bar is increasing -> safe to push to stack for increasing height
+Since rectangle area grows when height of bar is increasing -> we get better solution when pushing increasing height to stack
 When height deceasing for bar i, we need to check current maxArea till i-1, since area grows till i-1
 and update global max. (opposite of #42)
 
@@ -30,7 +30,7 @@ Every time we pop, we find out the area of rectangle formed using the current el
 // O(n), O(n)
 class Solution {
     public int largestRectangleArea(int[] heights) {
-        Stack<Integer> stack = new Stack<>(); //Keep indices
+        Stack<Integer> stack = new Stack<>(); //Keep indices, where heights increases and the area increases
         int i = 0;
         int n = heights.length;
         int max = 0;
