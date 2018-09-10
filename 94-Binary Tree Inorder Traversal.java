@@ -45,12 +45,15 @@ class Solution {
         
         TreeNode cur = root;
         while (cur!=null || !stack.isEmpty()){
+            //start from current node, push all nodes smaller than current node to stack
             while (cur!=null){
                 stack.push(cur);
                 cur = cur.left;
             }
-            cur = stack.pop();
+            //stack.pop() is the smallest for now, add to res
+            cur = stack.pop(); 
             res.add(cur.val);
+            //next smallest number is in the right subtree
             cur = cur.right;
         }
         
