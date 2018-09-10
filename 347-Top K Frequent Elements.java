@@ -10,7 +10,7 @@ Your algorithm's time complexity must be better than O(n log n), where n is the 
 
 Author: Mindy927 */
 
-//Method 1: hashmap + heap: time: O(nlgn)
+//Method 1: hashmap + heap: time: O(nlgk)
 class Solution {
     public List<Integer> topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>(); // value:cnt
