@@ -23,31 +23,10 @@ class Solution {
     public int minDepth(TreeNode root) {
         if (root == null) return 0;
         if (root.left == null && root.right == null) return 1;
-        int left = root.left != null? minDepth(root.left):Integer.MAX_VALUE;
-        int right = root.right != null? minDepth(root.right):Integer.MAX_VALUE;
-        return Math.min(left, right) + 1;
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
+        
+        //when only left = 0, current node is not a left, still need to searh right part, and return right+1
+        return left == 0? right+1:right==0? left+1: Math.min(left, right)+1;
     }
-}
-
-
-
-
-//archieve
-class Solution {
-    int min = Integer.MAX_VALUE;
-    public int minDepth(TreeNode root) {
-        if (root == null) return 0;
-        helper(root, 1);
-        return min;
-    }
-    
-    public void helper(TreeNode root, int depth){
-        if (root == null) return;
-        if (root.left == null && root.right == null) { //only update result when reach a leaf
-            min = Math.min(depth, min);
-            return;
-        }
-        helper(root.left, depth+1);
-        helper(root.right, depth+1);
-    }      
 }
