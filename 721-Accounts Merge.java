@@ -31,6 +31,7 @@ class Solution {
             }
         }
         
+       //Union with first email
        //update the rest of emails to parent of first email(connect to upper tree)
         for (List<String> acc : accounts) {
             String p = find(parent,acc.get(1));
@@ -38,14 +39,12 @@ class Solution {
                 parent.put(find(parent,acc.get(i)), p); //find update new root for current root!!
         }
         
-       //union based on parent map built 
+        //Union all emails and build union map(root:all its children)
         for (List<String> acc:accounts){
             for (int i=1; i<acc.size(); i++){ //current email, acc.get(i)
-                String root = find(parent, acc.get(i));
+                String root = find(parent, acc.get(i)); //KEY step: union with other subtree
                 if (!union.containsKey(root)) union.put(root, new TreeSet<>());
-                TreeSet<String> temp = union.get(root);
-                temp.add(acc.get(i));
-                union.put(root, temp);
+                union.get(root).add(acc.get(i));
             }
         }
         
