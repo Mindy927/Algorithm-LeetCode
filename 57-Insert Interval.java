@@ -25,31 +25,28 @@ Author: Mindy927 */
  * }
  */
 class Solution {
+    //Always make sure idx < n before intervals.get(idx)
     public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        int n = intervals.size();
         List<Interval> res = new ArrayList<>();
         
         //add intervals before newInterval
-        int i=0;
-        while ( i<intervals.size() && intervals.get(i).end < newInterval.start)
-            res.add(intervals.get(i++));
+        int idx = 0;
+        while ( idx < n && intervals.get(idx).end < newInterval.start) res.add(intervals.get(idx++));
         
-        //add newInterval
-        if (i==intervals.size() || intervals.get(i).start > newInterval.end) res.add(newInterval); //no conflicts
-        else {
-            //merge
-            Interval temp = new Interval( Math.min(intervals.get(i).start, newInterval.start), newInterval.end);
-            while ( i<intervals.size() && intervals.get(i).start <= newInterval.end){
-                temp.end = Math.max(newInterval.end, intervals.get(i++).end);
-            }        
-            res.add(temp);
+        //merge when conflicts (update newInterval and add)
+        while ( idx < n && intervals.get(idx).start <= newInterval.end){
+            newInterval.start = Math.min(intervals.get(idx).start, newInterval.start);
+            newInterval.end = Math.max(intervals.get(idx).end, newInterval.end);
+            idx++;
         }
-
+        res.add(newInterval);
+        
         //add rest
-        while (i<intervals.size()) res.add(intervals.get(i++));
+        while (idx < n) res.add(intervals.get(idx++));
         
         return res;
     }
-}
 
 //in-place
 class Solution {
