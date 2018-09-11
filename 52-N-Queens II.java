@@ -34,6 +34,7 @@ class Solution {
     }
     
     //number of ways when start from row i
+    //Similiar to string problem, consider rows as start index, and col as chars we could select in this round
     public int dfs(int n, int i, boolean[] cols, boolean[] diag1, boolean[] diag2){
         if (i == n) return 1; //pass row+1 to next round, Add result at next round
         
