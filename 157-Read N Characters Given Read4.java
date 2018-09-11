@@ -28,14 +28,15 @@ public class Solution extends Reader4 {
      * @return    The number of characters read
      */
     public int read(char[] buf, int n) {
-        int cnt = 0;
         char[] buf4 = new char[4];
-        while (cnt<n){
-            int temp = read4(buf4);
-            for (int i=0; i<temp && cnt<n; i++){ //check cnt<n while read
+        int cnt = 0;
+        
+        while (cnt < n){
+            int cnt4 = read4(buf4);
+            for (int i=0; i<cnt4 && cnt < n; i++){ //two stop conditions when reach end: (1) read up to n chars (2) reach end of file
                 buf[cnt++] = buf4[i];
             }
-            if (temp < 4) break; //break early when reach end of file
+            if (cnt4 < 4) break; //break ealier when reach end of file
         }
         
         return cnt;

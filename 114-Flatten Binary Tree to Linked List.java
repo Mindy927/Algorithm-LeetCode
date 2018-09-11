@@ -32,28 +32,29 @@ Author: Mindy927*/
  *     TreeNode(int x) { val = x; }
  * }
  */
-class Solution {
-    //recursion, root -> flattened left subTree -> flattened right subTree
 
+//recursion, root -> flattened left subTree -> flattened right subTree
+class Solution {
     public void flatten(TreeNode root) {
         helper(root);
     }
     
     public TreeNode helper(TreeNode root){
-        if (root == null) return root;
+        if (root == null) return null;
         
         TreeNode left = helper(root.left);
-        root.left = null; //set to null
         TreeNode right = helper(root.right);
         
-        if (left == null)  {
+        root.left = null;//set to null
+        if (left == null){
             root.right = right;
-        } else{
-           root.right = left;
-           while (left.right!=null) left = left.right;
-           left.right = right;
+        }else {
+            root.right = left;
+            while (left.right != null) left = left.right; //move to tail of list get from left subtree
+            left.right = right;
         }
         
         return root;
+    
     }
 }
