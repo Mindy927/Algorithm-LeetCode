@@ -50,7 +50,7 @@ double myPow(double x, int n) {
     else return t*t;
 }
 
-//Method 4: iteration
+//Method 4: iteration, build ans bit by bit
 double myPow(double x, int n) { 
     if(n==0) return 1;
     if(n<0) {
@@ -60,7 +60,7 @@ double myPow(double x, int n) {
     double ans = 1;
     while(n>0){
         if(n&1) ans *= x;
-        x *= x;
+        x *= x; //double x and n/2
         n >>= 1;
     }
     return ans;
