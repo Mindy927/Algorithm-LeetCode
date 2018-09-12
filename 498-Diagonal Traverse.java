@@ -42,7 +42,7 @@ class Solution {
                 i++; j--;
             }
             i--;j++;
-            if (i+1 < m) i++;
+            if (i+1 < m) i++; //move down first if possible
             else if (j+1 < n) j++;
             else break;
         }
