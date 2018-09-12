@@ -71,7 +71,7 @@ class Solution {
     public static int[] DIRS = new int[]{-1,0,1,0,-1};
     public List<Integer> numIslands2(int m, int n, int[][] positions) {
         List<Integer> result = new ArrayList<>();
-        int[][] grid = new int[m][n];
+        int[][] grid = new int[m][n]; //mark position of islands
         UF uf = new UF(m*n);
         
         for(int[] pos:positions){
@@ -82,7 +82,7 @@ class Solution {
                 int x = pos[0] + DIRS[d];
                 int y = pos[1] + DIRS[d+1];
                 int nextIdx = x * n + y;
-                if (x>=0 && y>=0 && x<m && y<n && grid[x][y]==1){
+                if (x>=0 && y>=0 && x<m && y<n && grid[x][y]==1){ //union when [x,y] is a island
                     uf.union(index, nextIdx);
                 }
             }
