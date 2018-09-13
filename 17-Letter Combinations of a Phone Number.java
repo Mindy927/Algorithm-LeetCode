@@ -14,25 +14,27 @@ Note:
 Although the above answer is in lexicographical order, your answer could be in any order you want.
 Author: Mindy927*/
 
+
+//bfs
 class Solution {
-    public List<String> letterCombinations(String digits){
-        List<String> result = new ArrayList<>();
-        if (digits.length()==0) return result;
-        result.add("");
-        String[] map = new String[]{"abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+    public List<String> letterCombinations(String digits) {
+        Queue<String> q = new LinkedList<>();
+        String[] map = new String[]{"", "", "abc", "def", "ghi","jkl", "mno", "pqrs","tuv","wxyz"};
         
+        q.offer("");
         for (int i=0; i<digits.length(); i++){
-            String cur = map[digits.charAt(i)-'2'];
-            int size = result.size();
-            for (int j=0; j<size; j++){
-                String prev = result.get(0);
-                result.remove(0);
-                for (int k=0; k<cur.length(); k++){
-                    result.add(prev + cur.charAt(k));
+            String cur = map[digits.charAt(i) - '0'];
+            int size = q.size();
+            for (int s=0; s<size; s++){
+                String prev = q.poll();
+                for (char c:cur.toCharArray()){
+                    q.offer(prev + c);
                 }
             }
         }
         
-        return result;
+        if (q.peek().equals("")) return new ArrayList<>(); //corner case ""
+        return new ArrayList<>(q);
+        
     }
 }
