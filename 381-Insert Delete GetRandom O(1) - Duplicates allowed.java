@@ -42,6 +42,7 @@ for LRU cache, order matters, we need doubly-linked-list to move nodes
 for getRandom, order doesnot matter, a linked list with map storing index is enough
 */
 
+//Notes: when delete, update nums/map for both deleteVal & lastVal
 class RandomizedCollection {
     ArrayList<Integer> nums; //vals
     Map<Integer, Set<Integer>> map; //val:a set of indices with same val
