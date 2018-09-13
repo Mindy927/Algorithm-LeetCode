@@ -44,28 +44,34 @@ class Solution {
     }
 }
 
-//Method 2: recursion
+//Method 2: dfs
 class Solution {
+    Map<String, Boolean> map; //string:whether has valid word break
     public boolean wordBreak(String s, List<String> wordDict) {
-        boolean[] memo = new boolean[s.length()]; //memo[i]: whether s.substring(i) has valid word break
-        boolean[] visited = new boolean[s.length()]; //visited[i]:whether result for s.substring has been recorded in memo
-        return dfs(s, 0, new HashSet<>(wordDict),visited, memo);
+        map = new HashMap<>();
+        int n = s.length();
+        Set<String> set = new HashSet<>();
+        for (String word:wordDict) set.add(word);
+        
+       return dfs(s, 0, set);
     }
     
-    //whether s.substring(start) has valid word break
-    public boolean dfs(String s, int start, Set<String> set, boolean[] visited, boolean[] memo){
-        if (start == s.length()) return true;
-        if (visited[start]) return memo[start];
+    public boolean dfs(String s, int start, Set<String> set){
+        String cur = s.substring(start);
+        if(map.containsKey(cur)) return map.get(cur);
+        if (start == s.length()) return false;
+        if (set.contains(s.substring(start))) return true;
         
-        visited[start] = true;
-        for (int end = start+1; end<=s.length(); end++){
-            String word = s.substring(start, end);
-            if (set.contains(word) && dfs(s, end, set, visited, memo)){
-                memo[start] = true;
-                return true;
+        for (int i=start; i<s.length(); i++){
+            if (set.contains(s.substring(start, i+1))){
+                if (dfs(s, i+1, set)){
+                    map.put(cur, true); //save result to map before return result
+                    return true;
+                } 
             }
         }
-        memo[start] = false;
-        return false; 
+        map.put(cur, false);//save result to map before return result
+        return false;
+        
     }
 }
