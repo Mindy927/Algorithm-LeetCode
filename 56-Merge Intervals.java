@@ -37,7 +37,7 @@ class Solution {
         for (Interval i:intervals){
             if (result.size()==0 || i.start > result.get(result.size()-1).end) {
                 result.add(i);
-            } else{
+            } else{ //since we sort based on start point, current interval would only overlap with previous interval
                 result.get(result.size()-1).end = Math.max(i.end,result.get(result.size()-1).end);
             } 
         }
