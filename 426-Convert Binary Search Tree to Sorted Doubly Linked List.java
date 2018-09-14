@@ -37,27 +37,58 @@ class Node {
     }
 };
 */
-
+ 
+// O(1) space
 class Solution {
-    //use dummy node since root will change, dummy.next point to original root
-    Node prev = null; //current tail
+    Node prev = null; //tail of left subtree, i.e, node before root
+    Node first = null;
     public Node treeToDoublyList(Node root) {
         if (root == null) return root;
-        Node dummy = new Node();
-        prev = dummy;
-        
         helper(root);
-        prev.right = dummy.right;
-        dummy.right.left = prev;
-        return dummy.right;
+        prev.right = first;
+        first.left = prev;
+        return first;
     }
     
-    public void helper(Node root){ 
+    //in-order travesal to build linked list 
+    public void helper(Node root){
         if (root == null) return;
-        helper(root.left); //convert left sub tree to doulbly linked list and prev is new tail
-        prev.right = root;
-        root.left = prev;
+        helper(root.left);
+        
+        if (prev == null) first = root;
+        else {
+            prev.right = root;
+            root.left = prev;
+        }
         prev = root;
         helper(root.right);
+    }
+}
+
+//in-order traversal using stack, O(n) space
+class Solution {
+    public Node treeToDoublyList(Node root) {
+        if (root == null) return root;
+        Stack<Node> stack = new Stack<>();
+        Node dummy = new Node();
+        Node prev = dummy;
+        while (!stack.isEmpty() || root!= null){
+            while (root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop(); //smallest number
+            
+            prev.right = root;
+            root.left = prev;
+            prev = root;
+            
+            root = root.right;
+        }
+        
+        prev.right = dummy.right;
+        dummy.right.left = prev;
+        
+        return dummy.right;
     }
 }
