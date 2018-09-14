@@ -56,7 +56,7 @@ class Solution {
             root = stack.pop();
             if (prev!=null && root.val <= prev) return false;
             prev = root.val;
-            root = root.right;
+            root = root.right; //dont have to verify cur.right is null or not, if its null, will pop next element from stack
         }
         
         return true;
