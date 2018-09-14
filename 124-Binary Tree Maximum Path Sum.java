@@ -36,28 +36,31 @@ Author:Mindy927*/
  *     TreeNode(int x) { val = x; }
  * }
  */
+
 class Solution {
-    int max = Integer.MIN_VALUE;
+    Integer max = null; 
     public int maxPathSum(TreeNode root) {
-        getMaxPath(root);
+        sumFrom(root);
         return max;
     }
     
-    public int getMaxPath(TreeNode root){ //get max sum from root to any of its children
-        if (root == null) return 0;
+    //declare as Integer to prevent overflow
+    //get max single path sum from root (parent -> children)
+    public Integer sumFrom(TreeNode root){
+        if (root == null) return null;
         
-        int left = getMaxPath(root.left);
-        int right = getMaxPath(root.right);
+        Integer left = sumFrom(root.left);
+        Integer right = sumFrom(root.right);
         
-        int tempMax = root.val; //update global max path
-        if (left > 0) tempMax += left;
-        if (right > 0) tempMax += right;
-        max = Math.max(max, tempMax);
+        //whether we will use sum from sub trees
+        int leftSum = (left != null && left > 0)? left:0;
+        int rightSum = (right != null && right > 0)? right:0;
         
-        int temp = 0;
-        if (left > right && left >=0) temp = left;
-        else if (right >=0 ) temp = right;
+         //update global max path sum
+        int tempMax = leftSum + rightSum + root.val;
+        max = max==null? tempMax:Math.max(tempMax, max);
         
-        return root.val + temp;
+        //return max sum root to either left OR right sub tree
+        return Math.max(leftSum, rightSum) + root.val;
     }
 }
