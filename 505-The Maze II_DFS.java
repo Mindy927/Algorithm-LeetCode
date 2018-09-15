@@ -25,8 +25,62 @@ Explanation: One shortest way is : left -> down -> left -> down -> right -> down
 
  Author: Mindy927 */
 
-//DFS, BFS is faster for this problem
+/*  uniform search algorithm
+BFS with priorityQueue, min cummulative cost with higher priority
+*/
+//Dijkstra's Algorithm
 
+class Solution {
+    class Point{
+        int x;
+        int y;
+        int dist;
+        public Point(int x, int y, int dist){
+            this.x = x;
+            this.y = y;
+            this.dist = dist;
+        }
+    }
+    
+    public int shortestDistance(int[][] maze, int[] start, int[] destination) {
+        int m = maze.length, n = maze[0].length;
+        int[][] dist = new int[m][n];
+        for (int i=0; i<m; i++){
+            Arrays.fill(dist[i], Integer.MAX_VALUE);
+        }
+       
+        int[] DIRS = new int[]{1, 0, -1, 0, 1};
+        
+        PriorityQueue<Point> pq = new PriorityQueue<Point>( (a,b) -> (a.dist - b.dist));   
+        pq.offer(new Point(start[0], start[1], 0));
+        
+        //poll once node with min dist each time, search all four directions, add new node to pq
+        while (!pq.isEmpty()){
+            Point cur = pq.poll();
+            if (dist[cur.x][cur.y] <= cur.dist) continue; //we have found shorter distance ealier
+            dist[cur.x][cur.y] = cur.dist;
+             
+            for (int d=0; d<4; d++){
+                int x = cur.x; //get x value inside the loop, start from pos cur each time
+                int y = cur.y;
+                int tempDist = cur.dist;
+                while ( x + DIRS[d] >=0 && x + DIRS[d] < m && y + DIRS[d+1] >=0 && y + DIRS[d+1] < n && maze[x + DIRS[d]][y + DIRS[d+1]]==0){
+                    x += DIRS[d];
+                    y += DIRS[d+1];
+                    tempDist++;
+                }
+                pq.offer(new Point(x, y, tempDist));
+            }
+        }
+        
+        return dist[destination[0]][destination[1]] == Integer.MAX_VALUE? -1:dist[destination[0]][destination[1]];
+    }
+}
+
+
+
+
+//DFS, archieve, beats 2%
  class Solution {
     int[] DIRS = new int[]{0,1,0,-1,0}; 
     public int shortestDistance(int[][] maze, int[] start, int[] destination) {
