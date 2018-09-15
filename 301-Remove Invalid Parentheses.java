@@ -18,46 +18,47 @@ Output: [""]
 
 
 Author: Mindy927 */
-//Method 1 : Set + Backtracking
+//Method 1 : Set + dfs
 class Solution {
-    public List<String> removeInvalidParentheses(String s) {
-        int left=0, right = 0; //number of '(' and ')' to be removed
-        for (int i=0; i<s.length();i++){
-            if (s.charAt(i) == '(') left++; 
-            else if (s.charAt(i)==')'){
-                if (left!=0) left--;
+    public List<String> removeInvalidParentheses(String s) {      
+        int left = 0, right = 0; //number of '(' and ')' to be removed
+        int cnt = 0;
+        for (int i=0; i<s.length(); i++){
+            char c = s.charAt(i);
+            if (c == '(') left++;
+            if (c == ')'){
+                if (left > 0) left--;
                 else right++;
             }
         }
         
-        Set<String> result = new HashSet<>();
-        StringBuilder sb = new StringBuilder();
-        remove(s, 0, left, right, 0, sb, result);
-        return new ArrayList<>(result);
+        Set<String> res = new HashSet<>();
+        dfs(s, 0, left, right, 0, "", res);
+        return new ArrayList<>(res);
     }
-  
-    public void remove(String s, int start, int left, int right, int open, StringBuilder sb, Set<String> result){
-         if (left < 0 || right < 0 || open < 0 ) return;
-         if (start == s.length() ){
-            if (left == 0 && right ==0 && open==0) result.add(sb.toString());
+    
+    public void dfs(String s, int start, int left, int right, int open, String temp, Set<String> res){
+        //left < 0, delete more '(' than required, return
+        //open < 0, temp string is not balanced now, e.g, "())", return
+        if (left < 0 || right < 0 || open < 0) return;
+        if (start == s.length()) {
+            if (left == 0 && right == 0 && open==0) res.add(temp);
             return;
         }
         
+        //We only consider 1 char (no for loop), left-1 indicating deleting 1 '(' in this round, and pass to next round
         char c = s.charAt(start);
-        int len = sb.length();
-        
-        if (c =='('){
-            remove(s, start+1, left-1, right, open, sb, result); //not use '(', dfs not use first, otherwise will append c to sb
-            remove(s, start+1, left, right, open+1, sb.append(c), result);    //use '('
-            
-        }else if (c ==')'){
-            remove(s, start+1, left, right-1, open, sb, result); //not use ')'
-            remove(s, start+1, left, right, open-1, sb.append(c), result);    //use ')'
-        } else{
-           remove(s, start+1, left, right, open, sb.append(c), result);  
+        if ( c == '('){
+            dfs(s, start+1, left-1, right, open, temp, res); //dont use '(' 
+            dfs(s, start+1, left, right, open+1, temp + "(", res); //use '('
+        }
+        else if (c == ')'){
+            dfs(s, start+1, left, right-1, open, temp, res); //dont use ')'
+            dfs(s, start+1, left, right, open-1, temp + ")", res); //use ')'
+        }else{
+            dfs(s, start+1, left, right, open, temp + c, res);
         }
         
-        sb.setLength(len); //backtracking
     }
 }
 
