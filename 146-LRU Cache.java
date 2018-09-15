@@ -90,7 +90,7 @@ class LRUCache {
             map.put(key, node);
             cnt++;
             if (cnt > capacity) { //remove head.next
-                map.remove(head.next.key); 
+                map.remove(head.next.key);  //remember to update map when remove
                 delete(head.next);
                 cnt--;
             }
