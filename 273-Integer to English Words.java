@@ -20,8 +20,48 @@ Input: 1234567891
 Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One
 
 Author: Mindy927 */
+//Version 1
+/*
+corner cases: 
+0 -> Zero
+1 000 000 --> One Million (dont append Thousand group, since its zero)
+*/
+
+class Solution {
+    private final String[] BELOW_20 = new String[]{"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+    private final String[] TENS = new String[]{"","Ten","Twenty","Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    private final String[] THOUSANDS = new String[]{"", "Thousand", "Million", "Billion"};
+        
+    public String numberToWords(int num) { 
+        if (num == 0) return "Zero";
+        String res = "";
+        
+        //starting from least significant digits, three a group, call helper to recursively translate it
+        int cnt = 0;
+        while (num > 0){
+            String temp = helper( num % 1000 );
+            if (!temp.equals("")){ 
+                res = temp + " " +THOUSANDS[cnt] + " " + res; //new words + lastResult
+            }
+            cnt++;
+            num /= 1000;
+        }
+        return res.trim();
+    }
+    
+    //helper function build numbers < 1000 (in same thousand group)
+    public String helper(int num){
+        String res = "";
+        if (num < 20) res = BELOW_20[num];
+        else if (num < 100) res = TENS[num / 10] + " " + BELOW_20[ num % 10];
+        else res = BELOW_20[num / 100] + " Hundred " + helper(num % 100);
+        return res.trim();
+    }
+}
 
 
+
+//Version 2
 public class Solution {
     private final String[] belowTen = new String[] {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
     private final String[] belowTwenty = new String[] {"Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
