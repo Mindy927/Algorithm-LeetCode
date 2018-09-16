@@ -15,48 +15,47 @@ The signature of the C++ function had been updated. If you still see your functi
 
 Author: Mindy927 */
 
+
+/*
+-- dont forget to continue for each switch case
+-- corner case "."(False)  "3."(True). --> if (hasE || hasDot) return hasDigit
+*/
+
 class Solution {
     public boolean isNumber(String s) {
-        String str = s.trim();
-        boolean hasDot = false;
-        boolean hasE = false;
-        boolean hasDigit = false; 
-        boolean hasFirst = false; 
+        boolean hasE = false; //has e in any of the previous char
+        boolean hasDigit = false; //digit in previous char
+        boolean hasFirst = false;
+        boolean hasDot = false; //has dot in any of the previous char
         
-        for (int i=0; i<str.length(); i++){
-            char c = str.charAt(i);
-            if (Character.isDigit(c)){
-                hasDigit = true;
+        s = s.trim();
+        for (int i=0; i<s.length(); i++){
+            char c = s.charAt(i);
+            if ( Character.isDigit(c) ) {
                 hasFirst = true;
-                continue;
+                hasDigit = true;
             }
-            switch (c){
-                case '.':
-                    if (hasDot || hasE) return false;
-                    hasDot = true;
-                    hasFirst = true;
-                    continue;
-                    
-                case 'e': //after e is a start of new int number
-                    if (hasE || !hasDigit) return false;
-                    hasE = true;
-                    hasDigit = false; //there must be more digits after e
-                    hasFirst = false; //we can apply +/- after e
-                    continue;
-                
-                case '+': 
-                case '-':
-                    if (hasFirst) return false;
-                    hasFirst = true;
-                    continue;
-                    
-                default:
-                    return false;
+            else if (c == 'e'){  //after e is a start of new int number
+                if (hasE || !hasDigit) return false;
+                hasE = true;
+                hasFirst = false; //we can apply +/- after e
+                hasDigit = false; //there must be more digits after e
             }
+            else if ( c == '.') {
+                if (hasDot || hasE) return false;
+                hasDot = true;
+                hasFirst = true;
+            } 
+            else if ( c == '+' || c == '-'){
+                if (hasFirst) return false;
+                hasFirst = true;              
+            }
+            else return false;
+
         }
         
-        if (hasE || hasDot) return hasDigit; //there must has digits either before '.' of  after '.', there must be digits after e
-        return str.length()!=0;
-        
+        if (hasE || hasDot) return hasDigit;//there must has digits either before '.' of  after '.', there must be digits after e
+        return s.length()!=0;
     }
+}
 }
