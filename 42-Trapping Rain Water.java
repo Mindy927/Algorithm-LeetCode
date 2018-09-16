@@ -54,22 +54,22 @@ class Solution {
         int leftMax = 0, rightMax = 0;
         int res = 0;
         
-        while (left < right){
-          if (height[left] <= height[right]){
-              if (height[left] > leftMax) leftMax = height[left];
-              else res += leftMax - height[left]; //since rightMax is larger, water trapped only depent on leftMax
-              left++; //rightMax is larger, water trapped depending on direction left->right
+        while (left <= right){
+            if (leftMax <= rightMax){
+                if (height[left] > leftMax) leftMax = height[left]; 
+                else res += leftMax - height[left];//since rightMax is larger, water trapped only depent on leftMax
+                left++;//rightMax is larger, water trapped depending on direction left->right
           }else{
-              if (height[right] > rightMax) rightMax = height[right];
-              else res += rightMax - height[right];
-              right--;
-          }
+            }else {
+                if (height[right] > rightMax) rightMax = height[right];
+                else res += rightMax - height[right];
+                right--;
+            }
         }
         
         return res;
     }
 }
-
 
 // Method 3: DP, O(n) / O(n)
 class Solution {
