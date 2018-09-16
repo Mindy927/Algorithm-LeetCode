@@ -43,6 +43,7 @@ dp[k][i][j] += dp[k-1][x][y];  (x,y) is pos can be reached from (i,j)
 class Solution {
     public double knightProbability(int N, int K, int r, int c) {
         int[][] dirs = new int[][]{{1, 2}, {1, -2}, {2, 1}, {2, -1}, {-1, 2}, {-1, -2}, {-2, 1}, {-2, -1}};
+        //double matrix to prevent overflow
         double[][] prev = new double[N][N]; //dp[k][i][j]: number of ways knight stay on the board after k moves --> reduce to 2-D
         
         for (int i=0; i<N; i++){
@@ -50,7 +51,7 @@ class Solution {
         }
         
         for (int k=0; k<K; k++){
-            double[][] cur = new double[N][N];
+            double[][] cur = new double[N][N]; //inisialize a new counter matrix for each k
             for (int i=0; i<N; i++){
                 for (int j=0; j<N; j++){
                     for (int[] dir:dirs){
