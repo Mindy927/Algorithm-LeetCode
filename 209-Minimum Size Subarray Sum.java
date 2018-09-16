@@ -31,28 +31,32 @@ class Solution {
     }
 }
 
-//Method 2: binary search:search if a window of size k exists that satisfy the condition
-public class Solution {
+//Method 2: O(nlgn) binary search:search if a window of size k exists that satisfy the condition
+class Solution {
     public int minSubArrayLen(int s, int[] nums) {
-        int i = 1, j = nums.length, min = 0;
-        while (i <= j) {
-            int mid = (i + j) / 2;
-            if (windowExist(mid, nums, s)) {
-                j = mid - 1;
-                min = mid;
-            } else i = mid + 1;
+        if (nums.length == 0) return 0;
+        int left = 1, right = nums.length;
+        while (left + 1 < right){
+            int mid = left + (right - left)/2;
+            if (valid(s, nums, mid)) right = mid;
+            else left = mid;
         }
-        return min;
+        return valid(s, nums, left)? left:valid(s, nums, right)? right:0;
     }
-
-
-    private boolean windowExist(int size, int[] nums, int s) {
+    
+    //whether there is a subArray with length len that has sum>=s
+    public boolean valid(int s, int[] nums, int len){
         int sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (i >= size) sum -= nums[i - size];
+        for (int i=0; i<len; i++){
             sum += nums[i];
+        }
+        if (sum >= s) return true;
+        
+        for(int i=len; i<nums.length; i++){
+            sum += nums[i];
+            sum -= nums[i - len];
             if (sum >= s) return true;
         }
+        
         return false;
     }
-}
