@@ -72,7 +72,7 @@ class Solution {
     
     //return true if prev is pre-requisite of cur operator, 
     //e.g 3*6 + 2, prev is '*', we need to calculate 3*6 and push 18 to stack before push 2 to stack
-    //eg 2-1 +2, prev is '-', we need to calculate 2-1 = 1 , otherwise its like 2- (1+2) = -1 wrong
+    //eg 2-1 +2, prev is '-', we need to calculate 2-1 = 1 first, i.e +/- is preReq for +/-
     public boolean preReq(char prev, char cur){
         if (prev == '(' || prev == ')') return false;
         if ( (prev == '+'||prev == '-') && (cur == '*' || cur == '/') ) return false;
