@@ -34,6 +34,7 @@ class Solution {
             //left is sorted[1,2,3,4] or right is unsorted[4,4,1,2]
             if (nums[mid] > nums[left] || nums[mid] > nums[right]){
                 //nums[left] <= target since we haven't compare target with nums[left]
+                // since left to mid is sorted, we can move right pointer when target falls in this region
                 if (nums[left] <= target && target < nums[mid]) right = mid; 
                 else left = mid;
             } 
