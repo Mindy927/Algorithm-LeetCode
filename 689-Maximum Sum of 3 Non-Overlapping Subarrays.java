@@ -16,47 +16,50 @@ nums[i] will be between 1 and 65535.
 k will be between 1 and floor(nums.length / 3).
 
 Author: Mindy927 */
-
 class Solution {
     public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
         int n = nums.length;
-        int[] sum = new int[n-k+1];  //sum[i] sum of subArray starts from i
-        int[] posL = new int[n-k+1]; //posL[i]: start index for max subArray before i
-        int[] posR = new int[n-k+1]; //posR[i]: start index for max subArray after i
+        int[] sum = new int[n-k+1]; //sum[i]: sum of subArray with size k starts from element i
+        int[] left = new int[n-k+1]; //left[i]: start index of largest subArray sum with start index <=i
+        int[] right = new int[n-k+1]; //right[i]: start index of largest subArray sum with start index >=i
         
-        
+        //build sum array
+        int curSum = 0;
         for (int i=0; i<k; i++){
-            sum[0] += nums[i];
+            curSum += nums[i];
         }
-        
-        for (int i=1; i<n-k+1; i++){
-           sum[i] = sum[i-1]-nums[i-1] + nums[i+k-1]; 
-        }
-        
-        //Fill posL & posR
-        posL[0] = 0;
-        for (int i=1; i<n-k+1; i++){
-            posL[i] = sum[i] > sum[posL[i-1]]? i:posL[i-1];
-        }
+        sum[0] = curSum;
 
-        posR[n-k] = n-k; //last start index for subArray of size k
-        for(int i=n-k-1; i>=0; i--){
-            posR[i] = sum[i] > sum[posR[i+1]]? i:posR[i+1];
+        for (int i=1; i<=n-k; i++){
+            sum[i] = sum[i-1] - nums[i-1] + nums[i+k-1]; 
         }
         
-        //Search based on middle subArray
-        int[] result = new int[3];
-        int max = 0;
-        for (int i=k; i<= n-2*k; i++) {//middle subArray with start index i
-            int l = posL[i-k];  //start index of left subArray
-            int r = posR[i+k];
-            int curSum = sum[l] + sum[i] + sum[r];
-            if ( curSum > max){
-                max = curSum;
-                result[0] = l; result[1] = i; result[2] = r;
-            }
-        }  
-        return result;
+        //build left sum 
+        left[0] = 0;
+        for (int i=1; i<=n-k; i++){
+            // if sum[left[i-1]] == sum[i] use left[i-1] since its with smaller lexicographically order
+            left[i] = sum[left[i-1]] >= sum[i]? left[i-1]:i; //store index with larget subArray sum
+        }
         
+        //build right sum
+        right[n-k] = n-k;
+        for (int i=n-k-1; i>=0; i--){
+            // if sum[right[i+1]] == sum[i] use i since its with smaller lexicographically order
+            right[i] = sum[right[i+1]] > sum[i]? right[i+1]:i;
+        }
+        
+        //build result
+        int finalSum = 0;
+        int[] res = new int[3];
+        for (int i=k; i<= n-2*k; i++){
+            int l = left[i-k];
+            int r = right[i+k];
+            if (sum[l] + sum[i] + sum[r] > finalSum){
+                res[0] = l; res[1] = i; res[2] = r;
+                finalSum = sum[l] + sum[i] + sum[r];
+            }
+        }
+        
+        return res;
     }
 }
