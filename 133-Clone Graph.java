@@ -33,6 +33,28 @@ Author: Mindy927 */
  *     UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
  * };
  */
+
+//version 1
+public class Solution {
+    //Need global map here for case when node connected to itself, return from map instead create a duplicate one
+    Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap(); 
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        if (map.containsKey(node)) return map.get(node);
+        if (node == null) return node;
+         //old node:new node
+        
+        UndirectedGraphNode copy = new UndirectedGraphNode(node.label);
+        map.put(node, copy);
+        for (UndirectedGraphNode nei:node.neighbors){
+            if (!map.containsKey(nei)) cloneGraph(nei);
+            copy.neighbors.add(map.get(nei));
+        }
+        
+        return copy;
+    }
+
+
+//version 2
 public class Solution {
     //map record the nodes which has been cloned
     Map<Integer, UndirectedGraphNode> map = new HashMap<>(); //old node:new node
