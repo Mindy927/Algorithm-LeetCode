@@ -42,24 +42,27 @@ Method 2: Two pointers O(nlgn)
 class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
-        int[] tail = new int[n+1]; //tail[i]:tail of LIS with len i
+        int[] tails = new int[n+1]; //tail[i]:tail of LIS with len i
+        Arrays.fill(tails, Integer.MIN_VALUE);
         int size = 0;
-        tail[0] = Integer.MIN_VALUE;
         
         for (int num:nums){
+            if (tails[size] < num){ //longer sequences found
+                size++;
+                tails[size] = num;
+                continue;
+            }
+            //binary search for which LIS current number x should fit into
             int left = 0, right = size;
-            while (left+1 < right){//binary search for which LIS current number x should fit into
+            while (left + 1 < right){
                 int mid = left + (right - left)/2;
-                if ( num > tail[mid]) left = mid;
+                if (num > tails[mid]) left = mid; //num larget than tails[mid],could form longer sequence, left = mid
                 else right = mid;
             }
-            
-            if (num > tail[left] && num <= tail[right]) tail[right] = num;
-            if (num > tail[right]){
-                tail[right + 1] = num;
-                size++;
-            }
+            if (tails[left] > num) tails[left] = num;
+            else if (tails[right] > num) tails[right] = num;
         }
+        
         return size;
-    }   
+    }
 }
