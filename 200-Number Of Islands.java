@@ -17,7 +17,7 @@ Answer: 3
 """
 __author__ = 'Mindy927'*/
 
-//Method 1: DFS
+//Method 1: DFS O(m*n) visit each cell at most twice
 
 class Solution {
     public int numIslands(char[][] grid) {
