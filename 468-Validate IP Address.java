@@ -42,47 +42,50 @@ corner case:
 */
 
 class Solution {
+    /*
+    1. check if first or last char is ".",":" before split
+    2. -- for strs[] verify array length after split, 
+       -- for each string, verify length, not empty
+       -- verify each char
+    3. for IPv4, verify all are digits, then string a -> int -> string b, verify a.equals(b)
+    4. for IPv6, toLoweCase()
+    */
+    
     public String validIPAddress(String IP) {
-        if ( IP.indexOf(".") != -1 ) return validIPv4(IP);
-        if ( IP.indexOf(":") != -1 ) return validIpv6(IP);
+        if (IP.indexOf('.') != -1) return valid4(IP);
+        if (IP.indexOf(":") != -1 ) return valid6(IP);
         return "Neither";
     }
     
-    public String validIPv4(String IP){
+    public String valid4(String IP){
         if (IP.indexOf("\\.") == 0 || IP.charAt(IP.length()-1)=='.') return "Neither";
         String[] strs = IP.split("\\.");
-        if (strs.length != 4 ) return "Neither";
-        for (int i=0; i<4; i++){
-            if (strs[i].equals("") || strs[i].length()>3) return "Neither";
-            int num = 0;
-            boolean hasDigit = false;
-            for (int j=0; j<strs[i].length(); j++){
-                char c = strs[i].charAt(j);
-                if ((!hasDigit && c=='0' && j!=strs[i].length()-1) || !Character.isDigit(c)) return "Neither"; //deal with leading zero
-                num = num*10 + (c - '0');
-                hasDigit = true;
+        if (strs.length != 4) return "Neither";
+        for (String str:strs){
+            if (str.equals("")) return "Neither";
+            if (str.length() > 3) return "Neither";
+            for (char c:str.toCharArray()) {
+                if (!Character.isDigit(c)) return "Neither";
             }
-            if (num > 255) return "Neither";
+            int num = Integer.parseInt(str);
+            if (num < 0 || num > 255) return "Neither";
+            if (!str.equals(String.valueOf(num))) return "Neither"; //get rid of leading 0
         }
-        
         return "IPv4";
     }
     
-    public String validIpv6(String IP){
+    public String valid6(String IP){
         if (IP.indexOf(":") == 0 || IP.charAt(IP.length()-1)==':') return "Neither";
         String[] strs = IP.split(":");
         if (strs.length != 8) return "Neither";
-        for (int i=0; i<8; i++){
-            String temp = strs[i].toLowerCase();
-            if (temp.equals("")) return "Neither";
-            if (temp.equals("0000") || temp.equals("0")) continue;
-            boolean hasDigit = false;
-            if (temp.length() > 4) return "Neither";
-            for (int j=0; j<temp.length(); j++){
-                char c = temp.charAt(j);
-                //if (!hasDigit && c == '0' && j>0 && temp.charAt(j-1) == '0') return "Neither"; //case: 001 
+        for (String str:strs){
+            if (str.equals("")) return "Neither";
+            if (str.equals("0") || str.equals("0000")) continue;
+            str = str.toLowerCase();
+            if (str.length() > 4) return "Neither";
+            for (int i=0; i<str.length(); i++){
+                char c = str.charAt(i);
                 if (!(Character.isDigit(c) || (c >= 'a' && c <= 'f'))) return "Neither";
-                hasDigit = true;
             }
         }
         return "IPv6";
