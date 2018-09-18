@@ -25,41 +25,34 @@ Author: Mindy927*/
 
 class Solution {
     public List<Integer> findClosestElements(int[] arr, int k, int x) {
-        int n = arr.length;
         List<Integer> res = new ArrayList<>();
-        if (k==0) return res;
+        if (k == 0) return res;
         
-        int cnt = 1;
-        int index = find(arr, x); 
-        if (index == -1) index = x < arr[0]? 0:n-1;
-        int left = index, right = index;
+        int n = arr.length;
+        int mid = closest(arr, 0, n-1, x);
+        
+        //position of candidate at left/right to be selected in next round
+        int left = mid-1, right = mid+1; 
+        int cnt = 1; //select mid
         while (cnt < k){
-            if (left-1 < 0) right++;
-            else if (right+1 >= n) left--;
-            else if (left-1>= 0 && right+1 < n){ //compare left-1 with right+1, verify next closest number before moving pointer
-                if ( Math.abs(x - arr[left-1]) <= Math.abs(arr[right+1] - x)) left--;
-                else right++;
-            }
+            if (left < 0 || (right < n && Math.abs(arr[left] - x) > Math.abs(arr[right] - x))) right++;
+            else left--;
             cnt++;
         }
-
-        for (int i=left; i<=right; i++){
-            res.add(arr[i]);
-        }
-        return res;
         
+        for (int i=left+1; i<right; i++) res.add(arr[i]);
+        return res;
     }
     
-    //find index closest to x
-    public int find(int[] arr, int x){
-        int left = 0, right = arr.length-1;
-        while (left+1< right){
+    //find closet index to target
+    public int closest(int[] arr, int left, int right, int target){
+        while (left + 1 < right){
             int mid = left + (right - left)/2;
-            if (arr[mid] == x) return mid;
-            else if (arr[mid] < x) left = mid;
-            else right = mid;
+            if (arr[mid] == target) return mid;
+            else if (arr[mid] > target) right = mid;
+            else left = mid;
         }
-        
-        return Math.abs(arr[left]-x) <= Math.abs(arr[right]-1)? left:right;
+        return Math.abs(arr[left] - target) < Math.abs(arr[right] - target)? left:right;
     }
+    
 }
