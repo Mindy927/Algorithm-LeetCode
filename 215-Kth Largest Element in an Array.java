@@ -50,12 +50,12 @@ class Solution {
             int cur = quickSort(nums, left, right);
             if (cur == target)  return nums[target];
             else if (cur < target) left = cur + 1;
-            else right = cur - 1;
+            else right = cur - 1; //left to cur-1 are elements < nums[cur], continue sort these numbers
         }
         return nums[target];
     }
     
-    //quick select, similar to sort colors
+    //quick sort, return index of pivot, 0 to index-1 are numbers < pivot
     public int quickSort(int[] nums, int left, int right){
         int pivot = nums[right]; //pick last element as pivot
         int i=left;
