@@ -37,7 +37,7 @@ class Solution {
         int n = x.size();
         Collections.sort(x);
         Collections.sort(y);
-        /x-axis of optimal solution is median of all Xs
+//x-axis of optimal solution is median of all Xs
         int midX = x.get(n/2); /
         int midY = y.get(n/2);
         
