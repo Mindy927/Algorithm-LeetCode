@@ -19,22 +19,23 @@ Author: Mindy927 */
 
 class Solution {
     public List<List<Integer>> combine(int n, int k) {
-        List<List<Integer>> result = new ArrayList<>();
-        helper(n,k,1, new ArrayList<>(), result);
-        return result;
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> temp = new ArrayList<>();
+        
+        dfs(n, 1, k,  temp, res);
+        return res;
     }
     
-    private void helper(int n, int k, int start, List<Integer> temp, List<List<Integer>> result){
-        if(temp.size()==k){
-            result.add(new ArrayList<>(temp));
+    public void dfs(int n, int start, int k, List<Integer> temp, List<List<Integer>> res){
+        if (temp.size() == k){
+            res.add(new ArrayList<>(temp));
             return;
-        }
-        
-        if (start > n) return; //pass i+1 to next round, add to result before checking start
+        } 
+        if (start > n) return;  //break ealier
         
         for(int i=start; i<=n; i++){
             temp.add(i);
-            helper(n, k, i+1, temp, result);
+            dfs(n, i+1, k, temp, res);
             temp.remove(temp.size()-1);
         }
     }
