@@ -14,25 +14,22 @@ Key Idea: Separate two unique  nums and use same idea as #136 to find each of th
 (2) Use the bit this two nums differ to separate them (right most set bit in diff)
 
 */
+
+
 class Solution {
     public int[] singleNumber(int[] nums) {
         int diff = 0;
-        for (int n:nums)  diff ^= n;  //1 pass to find XOR of two unique numbers
+        for (int num:nums) diff ^= num; //1 pass to find XOR of two unique numbers
         
-        int bit = diff & ~ (diff-1); // 101100 -> diff-1 = 101011 -> ~(diff-1) 010100 
-        
-        int[] result = new int[2];
-        int num1 = 0;
-        int num2 = 0;
-        //2 pass use bit to separate two unique numbers
-        for (int n:nums){
-            if ( (n & bit) == 0 ) num1 ^= n;
-            else num2 ^=n;
+        int r = diff & (-diff); //last bit set in diff
+
+        //2 pass use last bit set to separate two unique numbers
+        int a = 0, b = 0;
+        for (int num:nums){
+            if ( (num & r) == 0)  a ^= num; //possible candidate for a with bit not set at r
+            else b ^= num; 
         }
-            
-        result[0] = num1;
-        result[1] = num2;
-        
-        return result;
+     
+        return new int[]{a, b};   
     }
 }
