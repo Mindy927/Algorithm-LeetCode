@@ -13,20 +13,20 @@ Output: -1
 
 Author: Mindy927*/
 
-
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount+1]; //min # of coins to reach ammount i
-        Arrays.fill(dp,Integer.MAX_VALUE); //Integar.MAX_VALUE indicates ammount i is not reachable
+        int[] dp = new int[amount+1];//dp[i]: min # of coins to reach ammount i
+        Arrays.fill(dp, Integer.MAX_VALUE);
         dp[0] = 0;
         
-        for (int i=0; i<amount+1; i++){
-            for (int c:coins){
-                if (i-c >= 0 && dp[i-c]!=Integer.MAX_VALUE) dp[i] = Math.min(dp[i],dp[i-c]+1);//use only when dp[i-c] is reachable
-
+        for (int i=1; i<amount+1; i++){
+            for (int c:coins){ //possible choices for last coin to reach amount i
+                if (i-c>=0 && dp[i-c] != Integer.MAX_VALUE){//make sure dp[i-c] is reachable before using dp[i-c] to update dp[i]
+                    dp[i] = Math.min(dp[i-c]+1, dp[i]);
+                }
             }
         }
         
-        return dp[amount]==Integer.MAX_VALUE? -1:dp[amount];
+        return dp[amount] == Integer.MAX_VALUE? -1:dp[amount];
     }
 }
