@@ -19,9 +19,22 @@ Follow up:
 If there are lots of incoming S, say S1, S2, ... , Sk where k >= 1B, and you want to check one by one to see if T has its subsequence. In this scenario, how would you change your code?
 
 */
+//Method 1: indexOf
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        if (s.length() == 0) return true;
+        int index = -1;
+        for (int i=0; i<s.length(); i++){
+            char c = s.charAt(i);
+            index = t.indexOf(c, index+1); //next possilbe index of t matches cur char c starts from index+1
+            if (index == -1) return false;
+        }
+        
+        return index != -1;
+    }
+}
 
-
-//Method 1 : Two pointers
+//Method 2 : Two pointers
 class Solution {
     public boolean isSubsequence(String s, String t) {
         int i = 0, j = 0;
@@ -36,7 +49,7 @@ class Solution {
 }
 
 /*
-Method 2: Binary Search
+Method 3: Binary Search
 Map<char, List<Integer>> keep list of indices for each char
 */
 class Solution {
