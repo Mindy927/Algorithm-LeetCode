@@ -44,7 +44,7 @@ class Solution {  //k = 3, p=1
         int c0 = 0, c1 = 0; 
         for (int num:nums){
         	c1 = (num & c0) ^ c1; //Use old value of c0 to update c1 first
-   			c0 = num ^ c0;
+   			c0 = num ^ c0; //every number XOR 0 is itself ( 0^0 = 0, 1^0 = 1)
    			mask = ~(c0 & c1);
    			c1 &= mask;
    			c0 &= mask;
