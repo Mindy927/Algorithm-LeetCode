@@ -20,34 +20,30 @@ Note: The length of each dimension in the given grid does not exceed 50.
 Author:Mindy927 */
 
 class Solution {
+    int max = 0;
     public int maxAreaOfIsland(int[][] grid) {
-        int result = 0;
-        boolean[][] visited = new boolean[grid.length][grid[0].length];
-        
         for (int i=0; i<grid.length; i++){
             for (int j=0; j<grid[0].length; j++){
                 if (grid[i][j] == 1){
-                    int count[] = new int[1];
-                    helper (grid, visited,i,j, count);
-                    result = Math.max(result, count[0]);
+                    dfs(grid, i, j, new int[1]);
                 }
             }
         }
         
-        return result;
+        return max;
     }
     
-    //Helper func update max count start from grid[i][j]
-    public void helper (int[][] grid, boolean[][] visited,int i,int j,int[] count){
-        if (i<0 || i>= grid.length || j<0 || j>= grid[0].length) return;
-        if (visited[i][j] || grid[i][j]==0) return;
+    static final int[] DIRS = new int[]{1, 0 , -1, 0, 1};
+    public void dfs(int[][] grid, int i, int j, int[] cnt){
+        if (i<0 || j<0 || i>=grid.length || j>=grid[0].length || grid[i][j]==0) return;
         
-        count[0]++;  //keep counting if grid[i][j] is valid
-        visited[i][j] = true;
-        helper(grid, visited, i+1, j, count);
-        helper(grid, visited, i-1, j, count);
-        helper(grid, visited, i, j+1, count);
-        helper(grid, visited, i, j-1, count);
-        visited[i][j] = false;
+        grid[i][j] = 0;
+        cnt[0] ++;
+        max = Math.max(max, cnt[0]);
+        for (int d=0; d<4; d++){
+            int x = i + DIRS[d];
+            int y = j + DIRS[d+1];
+            dfs(grid, x, y, cnt);
+        }
     }
 }
