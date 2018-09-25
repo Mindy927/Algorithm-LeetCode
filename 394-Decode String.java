@@ -48,3 +48,47 @@ class Solution {
         return result;
     }
 }
+
+
+//version 2
+class Solution {
+    public String decodeString(String s) {
+        Stack<String> strStack = new Stack<>();
+        Stack<Integer> cntStack = new Stack<>();
+        
+        int cnt = 0;
+        for (int i=0; i<s.length(); i++){
+            char c = s.charAt(i);
+            if (Character.isDigit(c)){
+                cnt = cnt * 10 + c - '0';
+            }
+            
+            // push cnt to cntStack when reach "["
+            else if (c == '[') {
+                strStack.push(c + "");
+                cntStack.push(cnt);
+                cnt = 0;
+            }
+            
+            //pop all str until "[", repeat cntStack.pop() times and push back to StrStack
+            else if (c == ']'){ 
+                StringBuilder sb = new StringBuilder();
+                while (!strStack.isEmpty() && !strStack.peek().equals("[")){
+                    sb.insert(0, strStack.pop());
+                }
+                if (!strStack.isEmpty()) strStack.pop(); //pop "["
+                int curCnt = cntStack.pop();
+                String curStr = sb.toString();
+                sb = new StringBuilder();
+                for (int j=0; j<curCnt; j++) sb.append(curStr);
+                strStack.push(sb.toString());   
+            } 
+            
+            else { //char
+                strStack.push(c + "");
+            }
+        }
+        
+        String res = "";
+        while (!strStack.isEmpty()) res = strStack.pop() + res;
+        return res;
