@@ -61,13 +61,15 @@ class Solution {
         int i = 0, k = 0;
         int len = 0;//total len of words in a line
         while (i < words.length){
-            // at least k spaces required for [0,k] words
-            for (k=0, len=0; i+k<words.length && len+words[i+k].length()+k<= maxWidth;k++){
+
+        	//1. Find max number of words k fit in current line
+            for (k=0, len=0; i+k<words.length && len+words[i+k].length()+k<= maxWidth;k++){  // at least k spaces required for [0,k] words
                 len += words[i+k].length(); //add words[i+k] to len only when its in bound
             }
-            //current line has k words,[0,k-1], hence k-1 gaps
+
+            //2. Build each line by appending spaces
             String temp = words[i]; //start word in current line
-            for (int j=1; j<k; j++){
+            for (int j=1; j<k; j++){ //current line has k words,[0,k-1], hence k-1 gaps
                 if (i+k >= words.length) temp += " "; //last line
                 else {
                     for (int s=0; s<(maxWidth-len)/(k-1);s++) temp += " ";
