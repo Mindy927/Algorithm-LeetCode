@@ -12,6 +12,7 @@ Note:
 Author: Mindy927*/
 
 //sort first, and use larger value first, otherwise TLE
+//first find sum for each subset, and dfs to fit current num to possible subset
 class Solution {
     public boolean canPartitionKSubsets(int[] nums, int k) {
         int sum = 0;
