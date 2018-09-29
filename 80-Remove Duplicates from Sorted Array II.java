@@ -38,22 +38,13 @@ Author: Mindy927*/
 
 class Solution {
     public int removeDuplicates(int[] nums) {
-        if (nums.length <=2) return nums.length;
-        int i=0; //last item in valid array
-        int cnt = 1;
-        for (int j=1; j<nums.length; j++){
-            if (nums[j] == nums[i]){
-                if (cnt < 2) {
-                    nums[i+1] = nums[j]; i++; //next item (nums[i+1]) with be nums[j]
-                } 
-                cnt++;
-            } else {
-                nums[i+1] = nums[j];
-                i++;
-                cnt = 1;
-            }
+        int index = 1;
+        for (int i=2; i<nums.length; i++){
+            if (nums[i] == nums[index] && nums[i] == nums[index-1]) continue; //if current num is same as last two elements in res, continue
+            index++; 
+            nums[index] = nums[i];//otherwise add to result
         }
         
-        return i+1;
+        return index+1;
     }
 }
