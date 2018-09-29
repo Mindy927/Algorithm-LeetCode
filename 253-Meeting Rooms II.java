@@ -22,9 +22,9 @@ Author: Mindy927 */
  * }
  */
 //O(nlgn)
+
 class Solution {
     public int minMeetingRooms(Interval[] intervals) {
-        if (intervals.length==0) return 0;
         //Sort array based on start points
         Arrays.sort(intervals, new Comparator<Interval>(){
             public int compare(Interval a, Interval b){
@@ -33,25 +33,16 @@ class Solution {
         });
         
         //min heap based on end points, merge with non-overlapping meeting rooms ends first 
-        PriorityQueue<Interval> pq = new PriorityQueue<Interval>(intervals.length, new Comparator<Interval>(){
-           public int compare(Interval a, Interval b){
-               return a.end - b.end;
-           } 
-        });
-        
-        pq.offer(intervals[0]);
-        for (int i=1; i<intervals.length; i++){
-            if (intervals[i].start >= pq.peek().end){
-                Interval last = pq.poll();
-                last.start = Math.min(last.start, intervals[i].start);
-                last.end = Math.max(last.end, intervals[i].end);
-                pq.offer(last);
-            } else {
-                pq.offer(intervals[i]);
+        PriorityQueue<Interval> pq = new PriorityQueue<Interval> ((a,b)->(a.end - b.end)); 
+        for (int i=0; i<intervals.length; i++){
+            if (pq.isEmpty() || pq.peek().end > intervals[i].start) pq.offer(intervals[i]);
+            else {
+                Interval prev = pq.poll(); //meeting room ends first
+                prev.end = intervals[i].end;
+                pq.offer(prev);
             }
         }
         
         return pq.size();
-         
     }
 }
