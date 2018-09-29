@@ -59,21 +59,18 @@ In this way, deque with number DECREASING
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
         if (nums.length == 0) return new int[0];
-        Deque<Integer> q = new LinkedList<>(); //deque of indices
+        Deque<Integer> dq = new LinkedList<>(); //deque of indices, val decreasing
+        int[] res = new int[nums.length - k + 1];
         
-        //inisialize q with first k elements
-        for (int i=0; i<k; i++){
-            while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) q.pollLast();
-            q.offer(i);
-        }
-        
-        int n = nums.length;
-        int[] res = new int[n - k + 1];
-        for (int i=0; i<res.length; i++){
-            if(q.peekFirst() < i) q.pollFirst(); //remove invalid answer
-            res[i] = nums[q.peekFirst()];
-            while (!q.isEmpty() && i+k<n && nums[q.peekLast()] < nums[i+k]) q.pollLast(); //remove all smaller candidate 
-            q.offer(i+k);
+        for (int i=0; i<nums.length; i++){
+            //indices in dq is smaller than i, if nums[prev] < nums[i], they wont be max, i.e, useless, pop from dq
+            while (!dq.isEmpty() && nums[dq.peekLast()] <= nums[i]){
+                dq.pollLast();
+            }
+            //remove indices out of boundary
+            if (!dq.isEmpty() && i-dq.peekFirst()+1 >k) dq.pollFirst();
+            dq.offer(i);
+            if (i>=k-1) res[i-k+1] = nums[dq.peekFirst()];
         }
         
         return res;
