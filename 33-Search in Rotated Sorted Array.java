@@ -22,25 +22,22 @@ Author: Mindy927*/
 
 class Solution {
     public int search(int[] nums, int target) {
-        int left = 0, right = nums.length-1;
-        
         if (nums.length == 0) return -1;
-        while (left+1 < right){
+        int left = 0, right = nums.length-1;
+        while ( left+1 < right ){
             int mid = left + (right - left)/2;
             if (nums[mid] == target) return mid;
             
-            //left part is sorted, when target falls in [left, mid], move right to mid
-            if (nums[mid] > nums[left]) {
-                if (target >= nums[left] && target < nums[mid]) right = mid;
+            if (nums[mid] > nums[left]){ //left part is sorted
+                if ( nums[left] <= target && target < nums[mid]) right = mid;
                 else left = mid;
             }
-            //right part is sorted, when target falls in [mid, right], move left to mid
-            else {
-                if (target > nums[mid] && target <= nums[right]) left = mid;
+            else  {
+                if ( target <= nums[right] && target > nums[mid]) left = mid;
                 else right = mid;
             }
         }
         
-        return nums[left] == target? left:nums[right]==target? right:-1;
+        return nums[left] == target? left:nums[right] == target? right:-1;
     }
 }
