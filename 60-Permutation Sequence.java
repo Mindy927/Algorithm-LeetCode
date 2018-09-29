@@ -44,7 +44,7 @@ class Solution {
             int index = k / fac[n-i];
             sb.append(nums.get(index) + "");
             nums.remove(index); //remove from list when used
-            k -= index * fac[n-i];
+            k = k % fac[n-i];
         }
         
         return sb.toString();
@@ -52,38 +52,3 @@ class Solution {
 }
 
 
-// archieve: dfs, beats 7%
-class Solution {
-    int cnt;
-    String res;
-    public String getPermutation(int n, int k) {
-        boolean[] visited = new boolean[n+1]; //visited[i]:whether we've used i
-        cnt = k;
-        List<Integer> temp = new ArrayList<>();
-        res = "";
-        dfs(visited, n, temp);
-        return res;
-    }
-    
-    public void dfs(boolean[] visited, int n, List<Integer> temp){
-        if (temp.size() == n){
-            cnt --;
-            if (cnt == 0){
-                for (int i=0; i<n; i++) res = res + temp.get(i);
-            }
-            return;
-        }
-        
-        if (cnt < 0) return;
-        
-        //there is no start index for next choice, we choose any char that hasnt been visited
-        for(int i=1; i<=n; i++){
-            if (visited[i]) continue;
-            temp.add(i);
-            visited[i] = true;
-            dfs(visited, n, temp);
-            visited[i] = false;
-            temp.remove(temp.size()-1);
-        }
-    }  
-}
