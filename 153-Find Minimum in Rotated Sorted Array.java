@@ -19,21 +19,17 @@ Output: 0
 Author: Mindy927*/
 
 
-//binary search, always consider relationship for nums[mid], nums[left] first, similiar to #81
+//binary search
 class Solution {
     public int findMin(int[] nums) {
         int left = 0, right = nums.length-1;
-        while ( left + 1 < right ){
+        while ( left+1 < right ){
+            if (nums[right] > nums[left]) return nums[left]; //sorted
             int mid = left + (right - left)/2;
-            if ( nums[mid] > nums[left]){
-                if ( nums[right] > nums[left]) return nums[left]; // nums[left] < nums[mid] < nums[right]
-                else left = mid;
-            } else {
-                right = mid;
-            }
+            if (nums[mid] > nums[left]) left = mid;
+            else right = mid;
         }
         
         return nums[left] < nums[right]? nums[left]:nums[right];
-        
     }
 }
