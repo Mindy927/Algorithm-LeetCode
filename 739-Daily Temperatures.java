@@ -10,19 +10,16 @@ Author: Mindy927*/
 
 class Solution {
     public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] res = new int[n];
         Stack<Integer> stack = new Stack<>(); //stack of indices
-        int[] res = new int[temperatures.length];
-        
-        for(int i=0; i<temperatures.length; i++){
-            if (stack.isEmpty() || temperatures[stack.peek()] >= temperatures[i]) stack.push(i);
-            else{
-                //pop all the temp[k] < temp[i] and record i-k as # days they need to wait
-                while (!stack.isEmpty() && temperatures[stack.peek()] < temperatures[i]){ 
-                   int prev = stack.pop();
-                   res[prev] = i-prev;
-                }
-                stack.push(i);
-            } 
+        for (int i=0; i<n; i++){
+            //pop all the temp[prev] < temp[i] and record i-prev as # days they need to wait
+            while (!stack.isEmpty() && temperatures[stack.peek()] < temperatures[i]){
+                int prev = stack.pop();
+                res[prev] = i - prev;
+            }
+            stack.push(i);
         }
         
         return res;
