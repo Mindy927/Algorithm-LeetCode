@@ -20,47 +20,52 @@ minStack.getMin();   --> Returns -2.
 Author: Mindy927*/
 
 
+//each node stores min val after current node(including), similiar dp
+//add new node to head
 
 class MinStack {
-    private class StackNode{
-        StackNode next;
+    class Node{
         int val;
-        int min; //min of list start with current node
-        public StackNode(int val, int min){
+        int min;//min of list start with current node
+        Node next;
+        public Node(int val) {
             this.val = val;
-            this.min = min;
         }
-        
-        public StackNode(){}
-    }
-
-    /** initialize your data structure here. */
-    StackNode head;
-    public MinStack() {
-        head = null;
     }
     
+    Node head; //dummy node
+    /** initialize your data structure here. */
+    public MinStack() {
+        head = new Node(0);
+    }
+    
+    //add new node after dummy node head
     public void push(int x) {
-        if (head == null){
-            head = new StackNode(x,x);
-        } else {
-            StackNode newHead = new StackNode(x, Math.min(x, head.min));
-            newHead.next = head;
-            head = newHead;
-        } 
-        return;
+        Node node = new Node(x);
+        node.next = head.next;
+        node.min = node.next!=null? Math.min(x, node.next.min):x;
+        
+        head.next = node;
     }
     
     public void pop() {
-        if (head == null) return;
-        head = head.next;
+        head.next = head.next.next;
     }
     
     public int top() {
-        return head.val;
+        return head.next.val;
     }
     
     public int getMin() {
-        return head.min;
+        return head.next.min;
     }
 }
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
