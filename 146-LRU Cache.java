@@ -28,72 +28,71 @@ Author:Mindy927  */
     Move nodes to end of list when requested (delete node & add node again)
     when delete, update both map and linkedlist
     */
-    
+
 class LRUCache {
-    class DNode{ //doubly linked list node
-        int val;
+    class Node{
         int key;
-        DNode prev = null;
-        DNode next = null;
-        public DNode(){}
-        public DNode(int key, int val){
+        int val;
+        Node prev;
+        Node next;
+        public Node(int key, int val){
             this.key = key;
             this.val = val;
         }
     }
     
     //add before tail, FIFO
-    public void add(DNode node){
+    public void add(Node node){
         tail.prev.next = node;
         node.prev = tail.prev;
         node.next = tail;
         tail.prev = node;
     }
     
-    //delete node
-    public void delete(DNode node){
+    public void remove(Node node){
         node.prev.next = node.next;
         node.next.prev = node.prev;
     }
     
-    //move node to tail
-    public void move(DNode node){
-        delete(node);
+    public void moveToTail(Node node){
+        remove(node);
         add(node);
     }
     
-    Map<Integer, DNode> map;
-    DNode head, tail;
-    int cnt,capacity;
+    Node head;
+    Node tail;
+    int capacity;
+    Map<Integer, Node> map; //key:node
     public LRUCache(int capacity) {
-        map = new HashMap<>();
-        head = new DNode(0,0);
-        tail = new DNode(0,0);
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
         head.next = tail;
         tail.prev = head;
-        cnt = 0;
         this.capacity = capacity;
+        map = new HashMap<>();
     }
     
     public int get(int key) {
         if (!map.containsKey(key)) return -1;
-        move(map.get(key)); //move to tail
-        return map.get(key).val;
+        Node node = map.get(key);
+        moveToTail(node);
+        return node.val;
     }
     
     public void put(int key, int value) {
-        if (get(key) != -1){ //update existing node
-            map.get(key).val = value; 
-        }else{
-            DNode node = new DNode(key,value);
+        if (get(key) == -1){  //update existing node
+            Node node = new Node(key, value);
             add(node);
             map.put(key, node);
-            cnt++;
-            if (cnt > capacity) { //remove head.next
-                map.remove(head.next.key);  //remember to update map when remove
-                delete(head.next);
-                cnt--;
-            }
+        }else {
+            map.get(key).val = value;
+        }
+        
+        if (map.size() > capacity){ //remove head.next
+            Node lru = head.next;
+            map.remove(lru.key);
+            remove(lru);
         }
     }
 }
+
