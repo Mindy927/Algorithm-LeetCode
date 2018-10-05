@@ -1,41 +1,55 @@
 /*
-254. Factor Combinations
-DescriptionHintsSubmissionsDiscussSolution
-Numbers can be regarded as product of its factors. For example,
+Input: 1
+Output: []
+Example 2:
 
-8 = 2 x 2 x 2;
-  = 2 x 4.
-Write a function that takes an integer n and return all possible combinations of its factors.
-Note:
+Input: 37
+Output:[]
+Example 3:
 
-You may assume that n is always positive.
-Factors should be greater than 1 and less than n.
+Input: 12
+Output:
+[
+  [2, 6],
+  [2, 2, 3],
+  [3, 4]
+]
+Example 4:
 
-Author:Mindy927*/
+Input: 32
+Output:
+[
+  [2, 16],
+  [2, 2, 8],
+  [2, 2, 2, 4],
+  [2, 2, 2, 2, 2],
+  [2, 4, 4],
+  [4, 8]
+]
+
+Author: Mindy927*/
 
 
 class Solution {
-    public List<List<Integer>> getFactors(int n) {
-        List<List<Integer>> result = new ArrayList<>();
+    public List<List<Integer>> getFactors(int n) { 
+        List<List<Integer>> res = new ArrayList<>();
         List<Integer> temp = new ArrayList<>();
-        helper(n, 2, temp, result);
-        return result;
+        dfs(n, 2, temp, res);
+        return res;
     }
     
-    public void helper(int n, int start, List<Integer> temp, List<List<Integer>> result){
-        if (n==1) {
-             //Handle corner case [1] ==> output should be [] instead of [[]]
-            if (temp.size()>1) result.add(new ArrayList<>(temp));
+    public void dfs(int remain, int start, List<Integer> temp, List<List<Integer>> res){
+        if (remain < start) {
+            //make sure temp.size()>1 since we need at least two factors
+            if (remain == 1 && temp.size()>1) res.add(new ArrayList<>(temp));
             return;
         }
         
-        for (int i=start; i<=n; i++){ 
-            if (n % i == 0){
-                if (temp.size()!=0 && temp.get(temp.size()-1) > i) continue; //Duplicate [2,6] && [6,2]
-                temp.add(i);
-                helper(n/i, start, temp, result);
-                temp.remove(temp.size()-1);
-            }
+        for (int i=start; i<=remain; i++){
+            if (remain % i != 0) continue;
+            temp.add(i);
+            dfs(remain/i, i, temp, res);
+            temp.remove(temp.size()-1);
         }
     }
 }
