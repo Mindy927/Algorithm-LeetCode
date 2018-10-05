@@ -1,5 +1,4 @@
 /*
-
 Evaluate the value of an arithmetic expression in Reverse Polish Notation.
 
 Valid operators are +, -, *, /. Each operand may be an integer or another expression.
@@ -31,29 +30,28 @@ Explanation:
 = 17 + 5
 = 22
 
-*/
+Author: Mindy927 */
 
 
 class Solution {
     public int evalRPN(String[] tokens) {
-        Set<String> set = new HashSet<>(Arrays.asList("+","-", "*","/"));
-        Stack<Integer>  stack = new Stack<>();
+        Stack<Integer> stack = new Stack<>();
+        Set<String> set = new HashSet<>(Arrays.asList("+","-","*","/"));
         
         for (String str:tokens){
-            if (!set.contains(str)) stack.push(Integer.parseInt(str));
-            else {
-                int num1 = stack.pop();
-                int num2 = stack.pop();
-                if (str.equals("+")) stack.push(num1 + num2);
-                else if ( str.equals("-") ) stack.push( num2 - num1);
-                else if ( str.equals("*")) stack.push( num1 * num2);
-                else if ( str.equals("/")) {
-                    if ( Math.abs(num2) / Math.abs(num1) == 0) stack.push(0);
-                    else stack.push(num2/num1);
-                }
-            }
+            if (set.contains(str)) calc(stack, str);
+            else stack.push(Integer.parseInt(str)); 
         }
-       
-        return stack.pop();
+        
+        return stack.peek();
+    }
+    
+    public void calc(Stack<Integer> stack, String op){
+        int num2 = stack.pop();
+        int num1 = stack.pop();
+        if (op.equals("+")) stack.push(num1 + num2);
+        else if (op.equals("-")) stack.push(num1 - num2);
+        else if (op.equals("*")) stack.push(num1 * num2);
+        else stack.push(num1 / num2);       
     }
 }
