@@ -23,40 +23,37 @@ Author: Mindy927*/
 
 class Solution {
     class UF{
-        int n;
         int[] parent;
-        int count = 0;
-        
+        int cnt;
         public UF(int n){
-           parent = new int[n];
-           for (int i=0; i<n; i++){
-               parent[i] = i;
-               count++;
-           }    
+            parent = new int[n];
+            cnt = n;
+            for (int i=0; i<n; i++) parent[i] = i;
         }
         
         public int find(int x){
-            while (x!=parent[x]){
+            while ( parent[x] != x){
                 parent[x] = parent[parent[x]];
                 x = parent[x];
             }
             return x;
         }
         
-        public void union(int x,int y){
+        public void union(int x, int y){
             int rootX = find(x);
             int rootY = find(y);
             if (rootX == rootY) return;
-            parent[rootY] = rootX;
-            count--;
+            parent[rootX] = rootY;
+            cnt--;
         }
     }
     
     public int countComponents(int n, int[][] edges) {
-         UF uf = new UF(n);
-         for (int[] e:edges){
-             uf.union(e[0],e[1]);
-         }
-        return uf.count;
+        UF uf = new UF(n);
+        for (int[] edge:edges){
+            uf.union(edge[0], edge[1]);
+        }
+        
+        return uf.cnt;
     }
 }
