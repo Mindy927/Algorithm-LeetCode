@@ -16,32 +16,33 @@ Output:
 2
 One possible longest palindromic subsequence is "bb".
 
-Author:Mindy927*/
+Author: Mindy927*/
 
-
-/*
- if s.charAt(i) == s.charAt(j) dp[i][j] = dp[i+1][j-1]+ 2
-—fill table row- - ,col ++
-*/
 class Solution {
     public int longestPalindromeSubseq(String s) {
         int n = s.length();
-        int[][] dp = new int[n][n]; //dp[i][j] palindrome subSeq of s.substring(i,j+1)
+        int[][] dp = new int[n][n]; //dp[i][j]: length of longest palindrome subseq for s.substring[i,j]
+             
+        /* 
+        if charAt(i) == charAt(j), dp[i][j] = dp[i+1][j-1]
+        if charAt(i) != charAt(j), dp[i][j] = max(dp[i+1][j], dp[i][j-1])
+        */
         
+        int max = 0;
         for (int i=n-1; i>=0; i--){
-            dp[i][i] = 1;
-            for (int j=i+1; j<n; j++){
-                if (s.charAt(i) == s.charAt(j)){
-                    if (i+1<= j-1) dp[i][j] = dp[i+1][j-1]+2;
-                    else dp[i][j] = 2;
-                } else{
-                    int right = i+1<=j? dp[i+1][j]:0;
-                    int left = i<=j-1? dp[i][j-1]:0;
-                    dp[i][j] = Math.max(left, right);
+            for (int j=i; j<n; j++){
+                if (i==j) {
+                    dp[i][j] = 1;              
                 }
-            }
+                else if (s.charAt(i) == s.charAt(j)){
+                    dp[i][j] = i+1<=j-1? dp[i+1][j-1]+2:2;
+                }else {
+                    dp[i][j] = Math.max(dp[i+1][j], dp[i][j-1]);
+                }
+                max = Math.max(max, dp[i][j]);
+            }     
         }
         
-        return dp[0][n-1];
+        return max;
     }
 }
