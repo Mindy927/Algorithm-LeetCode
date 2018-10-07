@@ -39,7 +39,7 @@ class Solution {
         for (int i=0; i<queries.length; i++){
             String a = queries[i][0];
             String b = queries[i][1];
-            Set<String> visited = new HashSet<>();
+            Set<String> visited = new HashSet<>(); //new visited set for each query
             result[i] = dfs(a, b, visited, valueMap, dividend);
         }
         return result;
