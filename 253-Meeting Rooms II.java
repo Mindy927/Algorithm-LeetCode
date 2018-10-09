@@ -23,6 +23,7 @@ Author: Mindy927 */
  */
 //O(nlgn)
 
+//greedy, use meeting room ends first
 class Solution {
     public int minMeetingRooms(Interval[] intervals) {
         //Sort array based on start points
