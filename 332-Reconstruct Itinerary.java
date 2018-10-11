@@ -31,8 +31,9 @@ class Solution {
         return result;
     }
     
+    //greedy, add arrival airport with smallest lexical order
     public void dfs(String depature, Map<String, PriorityQueue<String>> map,List<String> result){
-         while (map.containsKey(depature) && !map.get(depature).isEmpty()){
+         while (map.containsKey(depature) && !map.get(depature).isEmpty()){ //while loop here since may go back to same city
              dfs(map.get(depature).poll(), map, result);
          }
          //add airport only when it cannot reach anywhere else -> current destination
