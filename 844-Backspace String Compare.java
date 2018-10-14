@@ -24,7 +24,37 @@ Explanation: S becomes "c" while T becomes "b".
 
 Author: Mindy927 */
 
-//Method 1: Stack O(m+n) / O(m+n)
+//Method 1: O(N) time O(1) space 
+//Scan backward, cnt++ for '#', cnt-- otherwise
+class Solution {
+    public boolean backspaceCompare(String S, String T) {
+        int i = S.length()-1, j = T.length()-1;
+        while (i>=0 || j>=0){
+            //balance S and T by backspace
+            int cnt1 = 0; 
+            while ( i >= 0 && (cnt1 > 0 || S.charAt(i) == '#')){ //start counter when current char is '#'
+                cnt1 += S.charAt(i) == '#'? 1:-1;
+                i--;
+            }
+            int cnt2 = 0;
+            while ( j >= 0 && (cnt2 > 0 || T.charAt(j) == '#')){
+                cnt2 += T.charAt(j) == '#'? 1:-1;
+                j--;
+            }
+            //compare
+            if (i>=0 || j>=0){
+                if (i<0 || j<0) return false; //one string reach start while the other doesn't
+                if (S.charAt(i) != T.charAt(j)) return false; //both haven't reach start, compare
+            }
+            if (i>=0) i--; 
+            if (j>=0) j--;
+        }
+        
+        return i==-1 && j==-1; //both reach start
+    }
+}
+
+//Method 2: Stack O(m+n) / O(m+n)
 class Solution {
     public boolean backspaceCompare(String S, String T) {
         return helper(S).equals(helper(T));    
@@ -45,22 +75,4 @@ class Solution {
     }
 }
 
-//Method 2: O(N) time O(1) space 
-//scan from right to left, cnt++ for "#", cnt-- otherwise, append to sb when cnt = 0
-class Solution {
-    public boolean backspaceCompare(String S, String T) {
-        return helper(S).equals(helper(T));
-    }
-    
-    public String helper(String s){
-        StringBuilder sb = new StringBuilder();
-        int cnt = 0;
-        for (int i=s.length()-1; i>=0; i--){
-            char c = s.charAt(i);
-            if (cnt == 0 & c!='#') sb.append(c);
-            else if (c == '#') cnt++;
-            else cnt--;
-        }
-        return sb.toString();
-    }
-}
+/
