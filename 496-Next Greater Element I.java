@@ -21,31 +21,7 @@ Explanation:
 
 Author: Mindy927 */
 
-//Method 1: Brute force
-class Solution {
-    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-        int n = nums1.length, m = nums2.length;
-        int[] res = new int[n];
-        Arrays.fill(res, -1);
-        
-        for (int i=0; i<n; i++){
-            boolean found = false;
-            for (int j=0; j<m; j++){
-                if (nums2[j] == nums1[i]) found = true;
-                if (found && nums2[j] > nums1[i]){
-                    res[i] = nums2[j];
-                    break;
-                }
-            }
-        }
-        
-        return res;
-    }
-}
-
-
-/*
-Method 2: Stack + hashMap
+/*  Stack
 iterate nums2
 push decreasing sequence to stack, when increase(6) pop 1,3,5
 record their next greater value as 6 in hashMap
@@ -54,21 +30,20 @@ record their next greater value as 6 in hashMap
 
 class Solution {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-        Stack<Integer> stack = new Stack<>();
-        Map<Integer, Integer> map = new HashMap<>(); // num: its next greater value
-        int[] result = new int[nums1.length];
+        Stack<Integer> stack = new Stack<>(); //stack of descreasing number
+        Map<Integer, Integer> map = new HashMap<>(); //num: next greater element
         
-        for (int i=0; i<nums2.length; i++){
-           while (!stack.isEmpty() && stack.peek() < nums2[i]){
-                    map.put(stack.pop(), nums2[i]);
-                }
-           stack.push(nums2[i]);
+        for(int num:nums2){
+            while (!stack.isEmpty() && stack.peek() < num){
+                map.put(stack.pop(), num);
+            }
+            stack.push(num);
         }
         
+        int[] res = new int[nums1.length];
         for (int i=0; i<nums1.length; i++){
-            result[i] = map.containsKey(nums1[i])? map.get(nums1[i]):-1;
+            res[i] = map.containsKey(nums1[i])? map.get(nums1[i]):-1;
         }
-        
-        return result;
+        return res;
     }
 }
