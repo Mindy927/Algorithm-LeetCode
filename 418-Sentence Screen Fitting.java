@@ -54,6 +54,7 @@ The character '-' signifies an empty space on the screen.
 
 Author: Mindy927*/
 
+//cnt record number of chars has been fitted in the screen => cnt%len is next char to be fit
 class Solution {
     public int wordsTyping(String[] sentence, int rows, int cols) {
         String s = String.join(" ", sentence) + " ";
@@ -61,10 +62,11 @@ class Solution {
         int cnt = 0; //next possible position for word
         
         for (int i=0; i<rows; i++){
-            cnt += cols;
+            cnt += cols; //we could fit at most cols chars in each row
             if (s.charAt( cnt % len ) == ' ') cnt++;
             else {
-                while (cnt>0 && s.charAt( (cnt-1) % len ) != ' ') cnt--; //when cnt-1 = ' ', cnt is next possible index
+                // cnt % len: index of next char we are going to fit in the sentence
+                while (cnt>0 && s.charAt( (cnt-1) % len ) != ' ') cnt--; 
             }
         }
         
