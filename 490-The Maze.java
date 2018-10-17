@@ -56,7 +56,7 @@ class Solution {
             for (int s=0; s<size; s++){
                 int[] pos = q.poll();
                 for (int d=0; d<4; d++){
-                    int x = pos[0], y = pos[1];
+                    int x = pos[0], y = pos[1]; //start from orginal postion in new direction
                     int deltaX = DIRS[d];
                     int deltaY = DIRS[d+1];
                     //find last valid position before hitting wall/obstacle, compare x + deltaX with boundary
