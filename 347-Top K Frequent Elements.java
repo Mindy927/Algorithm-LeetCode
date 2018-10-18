@@ -10,35 +10,24 @@ Your algorithm's time complexity must be better than O(n log n), where n is the 
 
 Author: Mindy927 */
 
-//Method 1: hashmap + heap: time: O(nlgk)
+//Method 1: hashmap + min heap: time: O(nlgk)
 class Solution {
     public List<Integer> topKFrequent(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>(); // value:cnt
-        List<Integer> result = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
+        Map<Integer, Integer> map = new HashMap<>(); //num:cnt
+        for (int num:nums) map.put(num, map.getOrDefault(num, 0)+1);
         
-        
-        for (int i=0; i<nums.length; i++){
-            int key = nums[i];
-            map.put(key, map.containsKey(key)? map.get(key)+1:1);
-        }
-        
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(map.size(), new Comparator<Integer>(){
-            public int compare(Integer a, Integer b){
-                return map.get(b) - map.get(a);
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>( (a,b)->(map.get(a)-map.get(b))); //min heap
+        for (int num:map.keySet()){
+            if ( pq.isEmpty() || pq.size() < k) pq.offer(num);
+            else if ( map.get(pq.peek()) < map.get(num)){ //compare with min element in heap 
+                pq.poll();
+                pq.offer(num);
             }
-        });
-        
-        for (Integer key:map.keySet()){
-            pq.offer(key);
         }
         
-    
-        while (k>0){
-            result.add(pq.poll());
-            k--;
-        }
-        
-        return result;
+        while (!pq.isEmpty()) res.add(0,pq.poll());
+        return res;
     }
 }
 
