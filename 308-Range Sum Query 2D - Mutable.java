@@ -29,6 +29,11 @@ Binary Indexed Tree
 time should be O(log(m) * log(n))
 */
 
+/*
+Example: query sum(7), keep flipping last bit set get 7,6,4
+ [ 0 1 2 3 ] [ 4 5 ]  [ 6 ]
+   BIT[4]     BIT[6]  BIT[7]
+*/
 class NumMatrix {   
     int m;
     int n;
@@ -52,7 +57,7 @@ class NumMatrix {
         if ( m == 0 || n == 0 ) return;
         int delta = val - nums[row][col];
         nums[row][col] = val;
-        for(int i=row+1; i<=m; i+=i&(-i)){
+        for(int i=row+1; i<=m; i+=i&(-i)){ //only number after row+1 will be affected
             for (int j=col+1; j<=n; j+=j&(-j)){
                 BIT[i][j] += delta;
             }
@@ -67,8 +72,8 @@ class NumMatrix {
     
     //pass the index of matrix, convert to 1-indexing of BIT
     public int query(int row, int col){
-        int sum = 0;
-        for (int i=row+1;i>0; i-= i&(-i)){
+        int sum = 0; 
+        for (int i=row+1;i>0; i-= i&(-i)){ //start from row+1 and get previous sum
             for (int j=col+1; j>0; j-=j&(-j)){
                 sum += BIT[i][j]; 
             }
