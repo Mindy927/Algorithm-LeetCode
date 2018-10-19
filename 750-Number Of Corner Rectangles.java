@@ -29,19 +29,22 @@ dp[j][k] : #of rows with col[j] & col[k] being 1 before row[i] (form upper corne
 */
 class Solution {
     public int countCornerRectangles(int[][] grid) {
-        int cnt =0, m = grid.length, n = grid[0].length;
-        int[][] dp = new int[n][n];
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] cnt = new int[n][n]; //dp[j][k] : number of 1 pairs at col j & col k
         
+        int res = 0;
         for (int i=0; i<m; i++){
-            for (int j=0; j<n-1; j++){
-                if (grid[i][j]!=1) continue;
+            for (int j=0; j<n-1; j++){ 
+                if (grid[i][j] == 0) continue;
                 for (int k=j+1; k<n; k++){
-                    if (grid[i][k]!=1) continue;
-                    cnt += dp[j][k];
-                    dp[j][k]++;
+                    if (grid[i][k] == 0) continue;
+                    res += cnt[j][k]; //current [j,k] pair could form a rectangle with [j,k] pair appeared in the rows above
+                    cnt[j][k]++;
                 }
             }
         }
-        return cnt;
+        
+        return res;
     }
 }
