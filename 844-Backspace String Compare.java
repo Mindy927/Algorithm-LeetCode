@@ -41,8 +41,8 @@ class Solution {
                 cnt2 += T.charAt(j) == '#'? 1:-1;
                 j--;
             }
-            //compare
-            if (i>=0 || j>=0){
+            //current pointers pointer to either -1 or non-"#", compare
+            if (i>=0 || j>=0){ 
                 if (i<0 || j<0) return false; //one string reach start while the other doesn't
                 if (S.charAt(i) != T.charAt(j)) return false; //both haven't reach start, compare
             }
