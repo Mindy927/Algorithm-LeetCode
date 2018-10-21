@@ -21,7 +21,7 @@ Author: Mindy927*/
 class Solution {
     public int numBusesToDestination(int[][] routes, int S, int T) {
         if (S == T) return 0;
-        Map<Integer, Set<Integer>> map = new HashMap<>(); //stop : stops go through current stop
+        Map<Integer, Set<Integer>> map = new HashMap<>(); //stop : buses go through current stop
         Set<Integer> visited = new HashSet<>(); // bus stops that has been visited
         
         for (int bus=0; bus<routes.length; bus++){
