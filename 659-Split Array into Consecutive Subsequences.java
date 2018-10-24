@@ -38,6 +38,8 @@ class Solution {
         
         for (int num:nums) freq.put(num, freq.containsKey(num)? freq.get(num)+1:1);
         
+        //for each num, if could append to previous sequence, append
+        //otherwise, start a new sequence of length 3
         for (int num:nums){
             if (freq.get(num) == 0) continue; //num has been added to some subsequence
             //append num to any of subsequence created before
