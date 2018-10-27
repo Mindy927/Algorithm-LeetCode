@@ -56,3 +56,17 @@ class Solution {
 }
 
 // Method 2: Store cnt in tree nodes, binary search
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        int cnt = count(root.left); //number of nodes in left subtree
+        if (cnt >= k) return kthSmallest(root.left, k);
+        else if (cnt == k-1) return root.val;
+        else return kthSmallest(root.right, k - cnt - 1);
+    }
+    
+    //return number of nodes in current tree
+    public int count(TreeNode root){
+        if (root == null) return 0;
+        return 1 + count(root.left) + count(root.right);
+    }
+}
