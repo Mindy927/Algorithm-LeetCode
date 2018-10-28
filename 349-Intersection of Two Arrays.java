@@ -10,6 +10,9 @@ The result can be in any order.
 
 Author: Mindy927*/
 
+/* Follow Up: what if one array m is much larger than n (m >> n)
+  Sort small arrays first(nlgn) and binary search for each element in large array(mlgn) => (m+n)lgn
+*/
 //Method1 : O(nlgn)
 class Solution {
     //sort, two pointers ,similiar idea as merge sort
