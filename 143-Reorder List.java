@@ -49,14 +49,23 @@ class Solution {
         return prev;
     }
 
-    public void merge(ListNode head1, ListNode head2){
-        while (head2!=null){
-            ListNode next1 = head1.next;
-            ListNode next2 = head2.next;
-            head1.next = head2;
-            head2.next = next1;
-            head1 = next1;
-            head2 = next2;
-        }
-    
+    //similiar to merge sort, one pointer for result list(cur)
+    //two pointers l1, l2 for each list
+    public ListNode merge(ListNode l1, ListNode l2){
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+        while (l1!=null || l2!=null){
+            if (l1 != null) {
+                cur.next = l1;
+                l1 = l1.next;
+                cur = cur.next;
+            }
+            if (l2 != null){
+                cur.next = l2;
+                l2 = l2.next;
+                cur = cur.next;
+            }
+        } 
+        return dummy.next;
+    }
 }
