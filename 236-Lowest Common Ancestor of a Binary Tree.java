@@ -30,6 +30,8 @@ p and q are different and both values will exist in the binary tree.
 
 Author: Mindy927 */
 
+
+//recurion
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         //since we iterate tree from top to down, if we found p or q at first time, it should be the lowest common ancestor
@@ -41,3 +43,37 @@ class Solution {
         return left == null? right: right == null? left:root;
     }
 }
+
+//iteration
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        Map<TreeNode, TreeNode> parent = new HashMap<>(); //node:parent
+        Stack<TreeNode> stack = new Stack<>();
+        parent.put(root, null);
+        stack.push(root);
+
+        //1. build parent map for both p and q
+        while (!parent.containsKey(p) || !parent.containsKey(q)) {
+            TreeNode node = stack.pop();
+            if (node.left != null) {
+                parent.put(node.left, node);
+                stack.push(node.left);
+            }
+            if (node.right != null) {
+                parent.put(node.right, node);
+                stack.push(node.right);
+            }
+        }
+        
+        //2. add path from p to root to set
+        Set<TreeNode> ancestors = new HashSet<>();
+        while (p != null) {
+            ancestors.add(p);
+            p = parent.get(p);
+        }
+        
+        //3. traverse q to root and find first intersection of path
+        while (!ancestors.contains(q))
+            q = parent.get(q);
+        return q;
+        
+    }
