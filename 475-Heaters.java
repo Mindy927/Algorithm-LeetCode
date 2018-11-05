@@ -20,21 +20,21 @@ Output: 1
 Explanation: The two heater was placed in the position 1 and 4. We need to use radius 1 standard, then all the houses can be warmed.
 Author: Mindy927 */
 
-//find the nearest heater for each house, by comparing the next heater with the current heater.
+//two pointers, for each house i, find two closest heaters, house i+1 start searching from left heater for house i
 class Solution {
     public int findRadius(int[] houses, int[] heaters) {
         Arrays.sort(heaters);
         Arrays.sort(houses);
-        int j = 0, r = 0;
+        int j = 0, res = 0;
         
         for (int i=0; i<houses.length; i++){
             //heaters[j+1] >= houses[i] while heaters[j]< houses[i]
             while (j+1 < heaters.length && heaters[j+1] < houses[i]) j++;
-            int cur = heaters[j];
+            int cur = heaters[j]; // j is the last heater <= house[i]
             int next = j+1<heaters.length? heaters[j+1]: heaters[j]; //last heater
-            r = Math.max(r, Math.min(Math.abs(houses[i]-cur), Math.abs(next-houses[i])));
+            res = Math.max(res, Math.min(Math.abs(houses[i]-cur), Math.abs(next-houses[i])));
         }
         
-        return  r;
+        return  res;
     }
 }
