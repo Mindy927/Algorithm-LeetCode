@@ -1,5 +1,4 @@
 /*
-
 Let's call an array A a mountain if the following properties hold:
 
 A.length >= 3
@@ -14,19 +13,26 @@ Example 2:
 
 Input: [0,2,1,0]
 Output: 1
+Note:
 
-Author:Mindy927*/
+3 <= A.length <= 10000
+0 <= A[i] <= 10^6
+A is a mountain, as defined above.
+
+Author: Mindy927*/
 
 class Solution {
     public int peakIndexInMountainArray(int[] A) {
         int left = 0, right = A.length-1;
-        
-        while (left+1 < right){
-            int mid = left + (right - left)/2;
-            if (A[mid] > A[mid-1]) left = mid;
+        while ( left + 1 < right ){
+            int mid = (left + right)/2;
+            if (A[mid-1] < A[mid] &&  A[mid] > A[mid+1]) return mid;
+            if ( A[mid-1] < A[mid] ) left = mid;
             else right = mid;
         }
         
-        return A[left]<A[right]? right:left;
+        return A[left] > A[right]? left:right;
     }
 }
+
+
