@@ -27,7 +27,7 @@ class Solution {
             height.add(new int[] {b[1], b[2]});
         }
         
-        //compare height when start/end point at same x-axis
+        //sort by x-axis, if x-axis ties, start point then end point
         Collections.sort(height, new Comparator<int[]>(){
             public int compare(int[]a, int[] b){
                 if (a[0] != b[0]) return a[0] < b[0]? -1:1;
@@ -35,18 +35,21 @@ class Solution {
             }
         });
         
+        //max heap of heights
         PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> (b - a));
         pq.offer(0);
         int prev = 0;
         
         for (int[] h:height){   
-            if (h[1] < 0) { //start point
+            //add current height to pq
+            if (h[1] < 0) { 
                 pq.offer(-h[1]);
             } else{
                 pq.remove(h[1]);  
             }
             
-            int cur = pq.peek(); //add points to result when cur max height changes
+            //update res when max height changes
+            int cur = pq.peek(); 
             if (prev != cur){
                 result.add(new int[]{h[0], cur}); 
                 prev = cur;
