@@ -28,6 +28,7 @@ class Solution {
     */
     public int checkRecord(int n) {
         final int M = 1000000007;
+        //dp[i][j][k]: number of ways to get length i, with at most j A's and at most k trailing Ls
         int[][][] dp = new int[n + 1][2][3]; 
         
         dp[0] = new int[][]{{1,1,1}, {1,1,1}}; // 2*3 size for intialize 
