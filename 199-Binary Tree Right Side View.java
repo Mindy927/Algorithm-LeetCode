@@ -39,7 +39,7 @@ class Solution {
     public void dfs(TreeNode root, List<Integer> res, int depth){
         if (root == null) return;
         
-        if (depth == res.size()){ //add to result for first(right-most) node in each depth
+        if (depth == res.size()){ //add result for first node reached in current depth(travese root.right first)
             res.add(root.val);
         }
         
