@@ -20,7 +20,8 @@ Output: 1
 Explanation: The two heater was placed in the position 1 and 4. We need to use radius 1 standard, then all the houses can be warmed.
 Author: Mindy927 */
 
-//two pointers, for each house i, find two closest heaters, house i+1 start searching from left heater for house i
+//two pointers, O(nlgn)
+//for each house i, find two closest heaters, house i+1 start searching from left heater for house i
 class Solution {
     public int findRadius(int[] houses, int[] heaters) {
         Arrays.sort(heaters);
@@ -36,5 +37,35 @@ class Solution {
         }
         
         return  res;
+    }
+}
+
+//binary search, O(nlgn)
+//for each house, binary search for closest heaters
+class Solution {
+    public int findRadius(int[] houses, int[] heaters) {
+        Arrays.sort(heaters);
+        
+        int res = 0;
+        for (int h:houses){
+            int idx = binarySearch(heaters, h);
+            int leftDist = idx==-1? Integer.MAX_VALUE: h - heaters[idx];
+            int rightDist = idx+1<heaters.length? heaters[idx+1]-h: Integer.MAX_VALUE;
+            res = Math.max(res, Math.min(leftDist, rightDist));
+        }
+        
+        return res;
+    }
+    
+    //return index of closest heater on the left
+    public int binarySearch(int[] heaters, int pos){
+        int left = 0, right = heaters.length-1;
+        while ( left+1 < right ){
+            int mid = (left + right)/2;
+            if (heaters[mid] > pos) right = mid;
+            else left = mid;
+        }
+        
+        return heaters[right] <= pos? right:heaters[left]<=pos? left:-1;
     }
 }
