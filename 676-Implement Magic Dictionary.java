@@ -13,7 +13,18 @@ Input: search("leetcoded"), Output: False
 
 Author: Mindy927*/
 
+/*
+Method 1: HashMap
+For each word in dict, for each char, remove the char and put the rest of the word as key, a pair of index of the removed char and the char as part of value list into a map. e.g.
+"hello" -> {"ello":[[0, 'h']], "hllo":[[1, 'e']], "helo":[[2, 'l'],[3, 'l']], "hell":[[4, 'o']]}
+During search, generate the keys as in step 1. When we see there's pair of same index but different char in the value array, we know the answer is true. e.g.
+"healo" when remove a, key is "helo" and there is a pair [2, 'l'] which has same index but different char. Then the answer is true;
+*/
 
+
+
+
+//Method 2: Trie
 class MagicDictionary {
     class TrieNode{
         boolean isEnd;
