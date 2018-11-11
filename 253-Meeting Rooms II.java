@@ -23,6 +23,38 @@ Author: Mindy927 */
  */
 //O(nlgn)
 
+//start critical points(start/end), +1 indicates start, -1 indicates end
+class Solution {
+    public int minMeetingRooms(Interval[] intervals) {
+        //sort start/end point, +1 for start, -1 for end
+        //keep counter for peak
+        int res = 0, cnt = 0;
+        
+        List<int[]> list = new ArrayList<>();
+        for (Interval i:intervals){
+            list.add(new int[]{i.start, 1});
+            list.add(new int[]{i.end, -1});
+        }
+        
+        Collections.sort(list, new Comparator<int[]>(){
+            public int compare(int[] a, int[] b){
+                if (a[0] != b[0]) return a[0] - b[0]; //min heap of start/end points
+                else return a[1] - b[1]; //start point before end
+            }
+        });
+        
+        
+        for (int[] i:list){
+            cnt += i[1];
+            res = Math.max(res, cnt);
+        }
+        
+        return res;
+    }
+}
+
+
+
 //greedy, use meeting room ends first
 class Solution {
     public int minMeetingRooms(Interval[] intervals) {
