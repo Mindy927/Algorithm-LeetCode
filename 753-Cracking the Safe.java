@@ -39,21 +39,20 @@ class Solution {
     
     //dfs for next digit based on visited set
     //return boolean since we could stop search when we found 1 solution
-    public boolean dfs(int n, int k, double target, Set<String> visited, StringBuilder sb){
+    public boolean dfs(int n, int k, double target,Set<String> visited, StringBuilder sb){
         if (visited.size() == target) return true;
-        
-        String prev = sb.substring(sb.length() - n + 1, sb.length());
-        for (int i=0; i<k; i++){  
-            String next = prev + i;
-            if (visited.contains(next)) continue;
-            visited.add(next);
-            sb.append(i);
-            if (dfs(n, k, target, visited, sb))  return true;
-            else {
-                visited.remove(next);
-                sb.setLength(sb.length()-1);
+          
+        for (int i=0; i<k; i++){
+            sb.append(""+i);
+            String temp = sb.toString().substring(sb.length()-n, sb.length());
+            if (!visited.contains(temp)){
+                visited.add(temp);
+                if (dfs(n, k, target, visited, sb)) return true;  
+                visited.remove(temp); //revert set
             }
+            sb.setLength(sb.length()-1); //revert sb
         }
+        
         return false;
     }
 }
