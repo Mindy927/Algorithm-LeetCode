@@ -22,7 +22,7 @@ class Solution {
         
         //left, right pointer iteraters each col pairs
         for (int l=0; l<n; l++){  
-            int[] sum = new int[m]; //sum[i], sum from matrix[i][l] to matrix[i][r]
+            int[] sum = new int[m]; //sum[i]: prefix sum from col l to r in row i 
             for(int r=l; r<n; r++){
                 for (int i=0; i<m; i++){
                     sum[i] += matrix[i][r];        
@@ -35,7 +35,7 @@ class Solution {
         return res;
     }
     
-    //return max sub array sum <= k
+    //return max sub array sum <= qk
     public int maxSubArraySum(int[] nums, int k){
         TreeSet<Integer> set = new TreeSet<Integer>(); //all possible prefix sums
         set.add(0);
