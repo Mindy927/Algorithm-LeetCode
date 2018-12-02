@@ -64,3 +64,16 @@ class Solution {
         return cnt;
     }
 }
+
+
+/*
+improvement:we guess the word with minimum 0 matches 
+ -> since target word will have high possiblities(80%) falls into 0 matches with the word guessed, guess the word with min 0 matches will reduces the candidate sets faster
+The probability of two words with 0 match is (25/26)^6 = 80%. That is to say, for a candidate word, we have 80% chance to see 0 match with the secret word. 
+In this case, we had 80% chance to eliminate the candidate word and its "family" words which have at least 1 match. 
+Additionally, in order to delete a max part of words, we select a candidate who has a big "family" (fewest 0 match).
+*/
+
+
+
+
